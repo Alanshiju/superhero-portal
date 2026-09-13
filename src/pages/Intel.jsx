@@ -24,12 +24,12 @@ export default function Intel() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 w-full">
-      <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8 border-b border-slate-200 dark:border-slate-800 pb-8">
+      <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8 border-b border-slate-400 dark:border-slate-800 pb-8">
         <HeroAvatar className="w-24 h-24 shrink-0" />
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <Database className="h-8 w-8 text-cyan-600 dark:text-cyan-400" />
-            <h1 className="text-3xl font-bold font-mono text-slate-900 dark:text-white uppercase">
+            <Database className="h-8 w-8 text-blue-700 dark:text-cyan-400 font-bold font-mono" />
+            <h1 className="text-3xl font-bold font-mono text-slate-950 dark:text-white font-extrabold uppercase">
               Intel & Archives
             </h1>
           </div>
@@ -46,7 +46,7 @@ export default function Intel() {
           className={`px-6 py-3 rounded font-mono font-bold tracking-widest uppercase transition-colors whitespace-nowrap ${
             activeTab === "genesis"
               ? "bg-cyan-600 text-white shadow-[0_0_15px_rgba(6,182,212,0.5)]"
-              : "bg-slate-200 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-800 hover:text-cyan-500"
+              : "bg-slate-200 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-800 hover:text-blue-700 dark:text-cyan-500"
           }`}
         >
           Genesis Protocol
@@ -57,7 +57,7 @@ export default function Intel() {
           className={`px-6 py-3 rounded font-mono font-bold tracking-widest uppercase transition-colors whitespace-nowrap ${
             activeTab === "tactical"
               ? "bg-cyan-600 text-white shadow-[0_0_15px_rgba(6,182,212,0.5)]"
-              : "bg-slate-200 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-800 hover:text-cyan-500"
+              : "bg-slate-200 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-800 hover:text-blue-700 dark:text-cyan-500"
           }`}
         >
           Tactical Directives
@@ -68,7 +68,7 @@ export default function Intel() {
           className={`px-6 py-3 rounded font-mono font-bold tracking-widest uppercase transition-colors whitespace-nowrap ${
             activeTab === "blueprint"
               ? "bg-cyan-600 text-white shadow-[0_0_15px_rgba(6,182,212,0.5)]"
-              : "bg-slate-200 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-800 hover:text-cyan-500"
+              : "bg-slate-200 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-800 hover:text-blue-700 dark:text-cyan-500"
           }`}
         >
           Interactive Blueprint
@@ -80,9 +80,9 @@ export default function Intel() {
         <div className="md:col-span-8">
           {activeTab === "genesis" && (
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="bg-white/80 dark:bg-slate-900/50 backdrop-blur-md p-8 rounded-xl border border-slate-200 dark:border-slate-800 shadow-lg transition-colors">
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 font-mono uppercase flex items-center gap-2">
-                  <Activity className="w-6 h-6 text-cyan-500" /> The Genesis
+              <div className="bg-white border-2 border-slate-200 shadow-lg shadow-slate-200/50 dark:bg-slate-900/70 dark:border-slate-800 dark:shadow-none rounded-xl p-8 transition-colors">
+                <h2 className="text-2xl font-bold text-slate-950 dark:text-white font-extrabold mb-4 font-mono uppercase flex items-center gap-2">
+                  <Activity className="w-6 h-6 text-blue-700 dark:text-cyan-500" /> The Genesis
                   Incident
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
@@ -102,9 +102,9 @@ export default function Intel() {
                 </p>
               </div>
 
-              <div className="bg-white/80 dark:bg-slate-900/50 backdrop-blur-md p-8 rounded-xl border border-slate-200 dark:border-slate-800 shadow-lg transition-colors">
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 font-mono uppercase flex items-center gap-2">
-                  <FileText className="w-6 h-6 text-cyan-500" /> Archive Logs
+              <div className="bg-white border-2 border-slate-200 shadow-lg shadow-slate-200/50 dark:bg-slate-900/70 dark:border-slate-800 dark:shadow-none rounded-xl p-8 transition-colors">
+                <h2 className="text-2xl font-bold text-slate-950 dark:text-white font-extrabold mb-6 font-mono uppercase flex items-center gap-2">
+                  <FileText className="w-6 h-6 text-blue-700 dark:text-cyan-500" /> Archive Logs
                 </h2>
                 <div className="space-y-4">
                   {[
@@ -133,14 +133,14 @@ export default function Intel() {
                         <span className="text-xs font-mono font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded">
                           {log.id}
                         </span>
-                        <span className="text-xs font-mono text-cyan-600 dark:text-cyan-400">
+                        <span className="text-xs font-mono text-blue-700 dark:text-cyan-400 font-bold font-mono">
                           {log.date}
                         </span>
                         <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 ml-auto">
                           {log.status}
                         </span>
                       </div>
-                      <h4 className="font-bold text-slate-900 dark:text-white mb-1">
+                      <h4 className="font-bold text-slate-950 dark:text-white font-extrabold mb-1">
                         {log.title}
                       </h4>
                       <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -155,17 +155,17 @@ export default function Intel() {
 
           {activeTab === "tactical" && (
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="bg-white/80 dark:bg-slate-900/50 backdrop-blur-md p-8 rounded-xl border border-slate-200 dark:border-slate-800 shadow-lg transition-colors">
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 font-mono uppercase flex items-center gap-2">
-                  <Lock className="w-6 h-6 text-cyan-500" /> The Kinetic Codex
+              <div className="bg-white border-2 border-slate-200 shadow-lg shadow-slate-200/50 dark:bg-slate-900/70 dark:border-slate-800 dark:shadow-none rounded-xl p-8 transition-colors">
+                <h2 className="text-2xl font-bold text-slate-950 dark:text-white font-extrabold mb-4 font-mono uppercase flex items-center gap-2">
+                  <Lock className="w-6 h-6 text-blue-700 dark:text-cyan-500" /> The Kinetic Codex
                 </h2>
                 <ul className="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
                   <li className="flex gap-4">
-                    <span className="text-cyan-500 font-bold font-mono text-lg mt-1">
+                    <span className="text-blue-700 dark:text-cyan-500 font-bold font-mono text-lg mt-1">
                       01.
                     </span>
                     <div>
-                      <strong className="text-slate-900 dark:text-white font-mono block mb-1 text-lg">
+                      <strong className="text-slate-950 dark:text-white font-extrabold font-mono block mb-1 text-lg">
                         Non-Lethal Kinetic Redirection
                       </strong>
                       Aegis does not strike; he absorbs and redirects. All
@@ -174,11 +174,11 @@ export default function Intel() {
                     </div>
                   </li>
                   <li className="flex gap-4">
-                    <span className="text-cyan-500 font-bold font-mono text-lg mt-1">
+                    <span className="text-blue-700 dark:text-cyan-500 font-bold font-mono text-lg mt-1">
                       02.
                     </span>
                     <div>
-                      <strong className="text-slate-900 dark:text-white font-mono block mb-1 text-lg">
+                      <strong className="text-slate-950 dark:text-white font-extrabold font-mono block mb-1 text-lg">
                         Universal Distress Monitoring
                       </strong>
                       The Kinetic Mesh listens constantly. It prioritizes
@@ -188,11 +188,11 @@ export default function Intel() {
                     </div>
                   </li>
                   <li className="flex gap-4">
-                    <span className="text-cyan-500 font-bold font-mono text-lg mt-1">
+                    <span className="text-blue-700 dark:text-cyan-500 font-bold font-mono text-lg mt-1">
                       03.
                     </span>
                     <div>
-                      <strong className="text-slate-900 dark:text-white font-mono block mb-1 text-lg">
+                      <strong className="text-slate-950 dark:text-white font-extrabold font-mono block mb-1 text-lg">
                         Infrastructure Safeguarding
                       </strong>
                       Before aiding an individual, the structural integrity of
@@ -207,14 +207,14 @@ export default function Intel() {
 
           {activeTab === "blueprint" && (
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="bg-white/80 dark:bg-slate-900/50 backdrop-blur-md p-8 rounded-xl border border-slate-200 dark:border-slate-800 shadow-lg transition-colors">
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 font-mono uppercase flex items-center gap-2">
-                  <Server className="w-6 h-6 text-cyan-500" /> Equipment & Tech
+              <div className="bg-white border-2 border-slate-200 shadow-lg shadow-slate-200/50 dark:bg-slate-900/70 dark:border-slate-800 dark:shadow-none rounded-xl p-8 transition-colors">
+                <h2 className="text-2xl font-bold text-slate-950 dark:text-white font-extrabold mb-4 font-mono uppercase flex items-center gap-2">
+                  <Server className="w-6 h-6 text-blue-700 dark:text-cyan-500" /> Equipment & Tech
                   Specs
                 </h2>
                 <div className="space-y-4">
-                  <div className="p-4 bg-slate-50 dark:bg-slate-950/80 rounded border border-slate-100 dark:border-slate-800 hover:border-cyan-500/50 transition-colors group">
-                    <h3 className="font-bold text-cyan-700 dark:text-cyan-400 font-mono mb-2 flex items-center gap-2">
+                  <div className="p-4 bg-slate-200 dark:bg-slate-950/80 rounded border border-slate-100 dark:border-slate-800 hover:border-blue-400 dark:border-cyan-500/50 transition-colors group">
+                    <h3 className="font-bold text-cyan-700 dark:text-blue-600 dark:text-cyan-400 font-mono mb-2 flex items-center gap-2">
                       <Zap className="w-4 h-4 group-hover:animate-pulse" />{" "}
                       Aegis Sub-Dermal Mesh
                     </h3>
@@ -224,8 +224,8 @@ export default function Intel() {
                       to phase between physical form and pure kinetic energy.
                     </p>
                   </div>
-                  <div className="p-4 bg-slate-50 dark:bg-slate-950/80 rounded border border-slate-100 dark:border-slate-800 hover:border-cyan-500/50 transition-colors group">
-                    <h3 className="font-bold text-cyan-700 dark:text-cyan-400 font-mono mb-2 flex items-center gap-2">
+                  <div className="p-4 bg-slate-200 dark:bg-slate-950/80 rounded border border-slate-100 dark:border-slate-800 hover:border-blue-400 dark:border-cyan-500/50 transition-colors group">
+                    <h3 className="font-bold text-cyan-700 dark:text-blue-600 dark:text-cyan-400 font-mono mb-2 flex items-center gap-2">
                       <Activity className="w-4 h-4 group-hover:animate-pulse" />{" "}
                       Quantum Chrono-Sensors
                     </h3>
@@ -236,8 +236,8 @@ export default function Intel() {
                       needed to deploy shields.
                     </p>
                   </div>
-                  <div className="p-4 bg-slate-50 dark:bg-slate-950/80 rounded border border-slate-100 dark:border-slate-800 hover:border-cyan-500/50 transition-colors group">
-                    <h3 className="font-bold text-cyan-700 dark:text-cyan-400 font-mono mb-2 flex items-center gap-2">
+                  <div className="p-4 bg-slate-200 dark:bg-slate-950/80 rounded border border-slate-100 dark:border-slate-800 hover:border-blue-400 dark:border-cyan-500/50 transition-colors group">
+                    <h3 className="font-bold text-cyan-700 dark:text-blue-600 dark:text-cyan-400 font-mono mb-2 flex items-center gap-2">
                       <ShieldAlert className="w-4 h-4 group-hover:animate-pulse" />{" "}
                       Phase-Shift Shielding
                     </h3>
@@ -256,7 +256,7 @@ export default function Intel() {
         {/* Right Column: Visualization Profile */}
         <div className="md:col-span-4 space-y-6">
           <div className="relative w-full bg-slate-900/50 backdrop-blur-md rounded-lg border border-slate-700 dark:border-cyan-900/50 overflow-hidden flex flex-col items-center justify-center shadow-lg p-4 group">
-            <div className="absolute top-2 left-2 text-xs font-mono text-cyan-500 animate-pulse z-20">
+            <div className="absolute top-2 left-2 text-xs font-mono text-blue-700 dark:text-cyan-500 animate-pulse z-20">
               [ KINETIC MESH RENDER : ACTIVE ]
             </div>
 
@@ -267,41 +267,41 @@ export default function Intel() {
               {activeTab === "blueprint" && (
                 <>
                   {/* Visor / Chrono-Sensors */}
-                  <div className="absolute top-[25%] left-[50%] -translate-x-1/2 w-4 h-4 rounded-full border border-cyan-400 bg-cyan-500/20 animate-ping z-30" />
+                  <div className="absolute top-[25%] left-[50%] -translate-x-1/2 w-4 h-4 rounded-full border border-cyan-400 bg-blue-200 dark:bg-cyan-500/20 animate-ping z-30" />
 
                   {/* Core / Phase-Shift */}
-                  <div className="absolute top-[55%] left-[50%] -translate-x-1/2 w-6 h-6 rounded-full border border-cyan-400 bg-cyan-500/20 animate-ping z-30" />
+                  <div className="absolute top-[55%] left-[50%] -translate-x-1/2 w-6 h-6 rounded-full border border-cyan-400 bg-blue-200 dark:bg-cyan-500/20 animate-ping z-30" />
 
                   {/* Shoulders / Sub-dermal mesh */}
-                  <div className="absolute top-[40%] left-[20%] w-4 h-4 rounded-full border border-cyan-400 bg-cyan-500/20 animate-ping z-30 delay-100" />
-                  <div className="absolute top-[40%] right-[20%] w-4 h-4 rounded-full border border-cyan-400 bg-cyan-500/20 animate-ping z-30 delay-100" />
+                  <div className="absolute top-[40%] left-[20%] w-4 h-4 rounded-full border border-cyan-400 bg-blue-200 dark:bg-cyan-500/20 animate-ping z-30 delay-100" />
+                  <div className="absolute top-[40%] right-[20%] w-4 h-4 rounded-full border border-cyan-400 bg-blue-200 dark:bg-cyan-500/20 animate-ping z-30 delay-100" />
                 </>
               )}
             </div>
 
             <div className="absolute bottom-2 right-2 flex items-center gap-1 z-20">
               <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></div>
-              <span className="text-[10px] font-mono text-cyan-400/80">
+              <span className="text-[10px] font-mono text-blue-600 dark:text-cyan-400/80">
                 SYNC
               </span>
             </div>
           </div>
 
-          <div className="bg-slate-100 dark:bg-slate-900/50 backdrop-blur-sm border border-slate-200 dark:border-slate-800 p-4 rounded-lg">
+          <div className="bg-white dark:bg-slate-900/50 backdrop-blur-sm border border-slate-400 dark:border-slate-800 p-4 rounded-lg">
             <h3 className="font-mono text-sm font-bold text-slate-800 dark:text-white mb-3 flex items-center gap-2">
-              <Fingerprint className="w-4 h-4 text-cyan-500" /> Biometric
+              <Fingerprint className="w-4 h-4 text-blue-700 dark:text-cyan-500" /> Biometric
               Signature
             </h3>
             <div className="space-y-2 font-mono text-xs">
               <div className="flex justify-between">
                 <span className="text-slate-500">Designation:</span>
-                <span className="text-slate-900 dark:text-cyan-400">
+                <span className="text-slate-900 dark:text-blue-600 dark:text-cyan-400">
                   AEGIS_SYS
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Host:</span>
-                <span className="text-slate-900 dark:text-cyan-400">
+                <span className="text-slate-900 dark:text-blue-600 dark:text-cyan-400">
                   Dr. A. Vance
                 </span>
               </div>
@@ -313,7 +313,7 @@ export default function Intel() {
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Core Temp:</span>
-                <span className="text-slate-900 dark:text-cyan-400">0.02K</span>
+                <span className="text-slate-900 dark:text-blue-600 dark:text-cyan-400">0.02K</span>
               </div>
             </div>
           </div>

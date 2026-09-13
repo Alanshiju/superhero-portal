@@ -12,8 +12,15 @@ export default function ShieldSimulator({ powerLevels, stressTestActive }) {
 
     const resizeCanvas = () => {
       const parent = canvas.parentElement;
-      canvas.width = parent.clientWidth;
-      canvas.height = 500;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = parent.clientWidth * dpr;
+      canvas.height = 500 * dpr;
+      canvas.style.width = `${parent.clientWidth}px`;
+      canvas.style.height = "500px";
+      ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform before scaling
+      ctx.scale(dpr, dpr);
+      canvas._logicalWidth = parent.clientWidth;
+      canvas._logicalHeight = 500;
     };
 
     window.addEventListener("resize", resizeCanvas);
@@ -21,8 +28,8 @@ export default function ShieldSimulator({ powerLevels, stressTestActive }) {
 
     class Particle {
       constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
+        this.x = Math.random() * canvas._logicalWidth;
+        this.y = Math.random() * canvas._logicalHeight;
         this.baseX = this.x;
         this.baseY = this.y;
         this.density = Math.random() * 30 + 1;
@@ -113,10 +120,10 @@ export default function ShieldSimulator({ powerLevels, stressTestActive }) {
     class Projectile {
       constructor() {
         this.x = Math.random() < 0.5 ? 0 : canvas.width;
-        this.y = Math.random() * canvas.height;
+        this.y = Math.random() * canvas._logicalHeight;
         let angle = Math.atan2(
-          canvas.height / 2 - this.y,
-          canvas.width / 2 - this.x,
+          canvas._logicalHeight / 2 - this.y,
+          canvas._logicalWidth / 2 - this.x,
         );
         // Add spread
         angle += (Math.random() - 0.5) * 0.5;
@@ -146,9 +153,9 @@ export default function ShieldSimulator({ powerLevels, stressTestActive }) {
 
         if (
           this.x < -50 ||
-          this.x > canvas.width + 50 ||
+          this.x > canvas._logicalWidth + 50 ||
           this.y < -50 ||
-          this.y > canvas.height + 50
+          this.y > canvas._logicalHeight + 50
         ) {
           this.active = false;
         }
@@ -193,7 +200,7 @@ export default function ShieldSimulator({ powerLevels, stressTestActive }) {
     canvas.addEventListener("click", handleClick);
 
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas._logicalWidth, canvas._logicalHeight);
       frameCount++;
 
       if (stressTestActive && frameCount % 10 === 0) {
@@ -244,7 +251,7 @@ export default function ShieldSimulator({ powerLevels, stressTestActive }) {
   }, [powerLevels, stressTestActive]); // Re-bind when state changes to update closures
 
   return (
-    <div className="relative w-full rounded-xl overflow-hidden bg-slate-900/50 backdrop-blur-md border border-slate-700 dark:border-cyan-900 shadow-2xl cursor-crosshair">
+    <div className="relative w-full rounded-xl overflow-hidden bg-slate-950 dark:bg-slate-900 border-2 border-slate-300 dark:border-cyan-900/60 shadow-xl dark:shadow-[0_0_30px_rgba(6,182,212,0.15)] cursor-crosshair">
       <div className="absolute top-4 left-4 z-10 font-mono text-xs text-cyan-500 pointer-events-none drop-shadow-md">
         [ CLICK TO EMIT KINETIC SHOCKWAVE ]
       </div>

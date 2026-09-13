@@ -64,50 +64,56 @@ export default function Navbar() {
 
     setBeaconStatus("locating");
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const coords = `${position.coords.latitude}, ${position.coords.longitude}`;
-        playAlert();
+    try {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const coords = `${position.coords.latitude}, ${position.coords.longitude}`;
+          playAlert();
 
-        // Flash viewport amber/cyan via body class
-        document.body.classList.add(
-          "animate-[flashEmergency_2s_ease-in-out_infinite]",
-        );
-
-        const templateParams = {
-          name: "UNKNOWN CITIZEN (RAPID BEACON)",
-          age: "N/A",
-          location: coords,
-          email: "N/A",
-          grievance: "CRITICAL PRIORITY: Rapid Beacon Triangulated.",
-          submission_date: new Date().toLocaleString(),
-          subject: "CRITICAL PRIORITY: Rapid Beacon Triangulated",
-        };
-
-        emailjs
-          .send(
-            import.meta.env.VITE_SERVICE_ID,
-            import.meta.env.VITE_TEMPLATE_ID,
-            templateParams,
-            import.meta.env.VITE_PUBLIC_KEY,
-          )
-          .catch(console.error);
-
-        setBeaconStatus("active");
-
-        // Remove flashing after 10s
-        setTimeout(() => {
-          document.body.classList.remove(
+          // Flash viewport amber/cyan via body class
+          document.body.classList.add(
             "animate-[flashEmergency_2s_ease-in-out_infinite]",
           );
-        }, 10000);
-      },
-      (err) => {
-        console.error(err);
-        setBeaconStatus("idle");
-        alert("Unable to retrieve location.");
-      },
-    );
+
+          const templateParams = {
+            name: "UNKNOWN CITIZEN (RAPID BEACON)",
+            age: "N/A",
+            location: coords,
+            email: "N/A",
+            grievance: "CRITICAL PRIORITY: Rapid Beacon Triangulated.",
+            submission_date: new Date().toLocaleString(),
+            subject: "CRITICAL PRIORITY: Rapid Beacon Triangulated",
+          };
+
+          emailjs
+            .send(
+              import.meta.env.VITE_SERVICE_ID || "test_service",
+              import.meta.env.VITE_TEMPLATE_ID || "test_template",
+              templateParams,
+              import.meta.env.VITE_PUBLIC_KEY || "test_key",
+            )
+            .catch(console.error);
+
+          setBeaconStatus("active");
+
+          // Remove flashing after 10s
+          setTimeout(() => {
+            document.body.classList.remove(
+              "animate-[flashEmergency_2s_ease-in-out_infinite]",
+            );
+          }, 10000);
+        },
+        (err) => {
+          console.error(err);
+          setBeaconStatus("idle");
+          alert("Unable to retrieve location or permission denied.");
+        },
+      );
+    } catch (err) {
+      console.error(err);
+      setBeaconStatus("idle");
+      alert("Geolocation failed unexpectedly.");
+    }
   };
 
   return (
@@ -132,7 +138,7 @@ export default function Navbar() {
         </div>
       )}
 
-      <nav className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/70 dark:bg-slate-950/70 border-b border-cyan-500/20 dark:border-cyan-500/30 transition-colors duration-300">
+      <nav className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/70 dark:bg-slate-950/70 border-b border-slate-300 dark:border-cyan-500/30 dark:border-cyan-500/30 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Brand */}
@@ -142,10 +148,10 @@ export default function Navbar() {
               onMouseEnter={playHover}
               className="flex-shrink-0 flex items-center gap-2 group"
             >
-              <Shield className="h-8 w-8 text-cyan-600 dark:text-cyan-400 group-hover:scale-110 transition-transform" />
+              <Shield className="h-8 w-8 text-blue-700 dark:text-cyan-400 group-hover:scale-110 transition-transform" />
               <span className="font-mono font-bold text-xl tracking-wider text-slate-900 dark:text-white uppercase">
                 Aegis
-                <span className="text-cyan-600 dark:text-cyan-400">_Sys</span>
+                <span className="text-blue-700 dark:text-cyan-400">_Sys</span>
               </span>
             </NavLink>
 
@@ -163,8 +169,8 @@ export default function Navbar() {
                       className={({ isActive }) =>
                         `flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium font-mono uppercase tracking-wide transition-colors ${
                           isActive
-                            ? "bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 border border-cyan-500/20 font-bold"
-                            : "text-slate-600 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:text-cyan-500 dark:hover:text-cyan-400"
+                            ? "bg-blue-100 dark:bg-cyan-500/10 text-blue-800 dark:text-cyan-400 border border-slate-300 dark:border-cyan-500/30 font-bold"
+                            : "text-slate-600 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:text-blue-700 dark:hover:text-cyan-400 dark:hover:text-cyan-400"
                         }`
                       }
                     >
@@ -189,7 +195,7 @@ export default function Navbar() {
                 </span>
               </button>
 
-              <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-200/50 dark:bg-slate-800/50 border border-slate-300/50 dark:border-slate-700/50">
+              <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-200/50 dark:bg-slate-800/50 border border-slate-400/50 dark:border-slate-700/50">
                 {isOnline ? (
                   <>
                     <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
@@ -245,7 +251,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Nav */}
-        <div className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
+        <div className="md:hidden border-t border-slate-400 dark:border-slate-800 bg-slate-200 dark:bg-slate-900">
           <div className="flex justify-around px-2 py-3 space-x-1 sm:px-3 overflow-x-auto">
             {NAV_LINKS.map((link) => {
               const Icon = link.icon;
@@ -257,7 +263,7 @@ export default function Navbar() {
                   className={({ isActive }) =>
                     `flex flex-col items-center gap-1 px-3 py-2 rounded-md text-xs font-medium font-mono uppercase tracking-wide transition-colors ${
                       isActive
-                        ? "text-cyan-600 dark:text-cyan-400 font-bold"
+                        ? "text-blue-700 dark:text-cyan-400 font-bold"
                         : "text-slate-500 dark:text-slate-400"
                     }`
                   }
@@ -272,7 +278,7 @@ export default function Navbar() {
       </nav>
 
       {/* Live Incident Ticker */}
-      <div className="w-full bg-cyan-900/90 text-cyan-100 py-1 overflow-hidden flex whitespace-nowrap border-b border-cyan-500/50 relative z-40 shadow-md">
+      <div className="w-full bg-blue-900 dark:bg-cyan-900/90 text-white dark:text-cyan-100 py-1 overflow-hidden flex whitespace-nowrap border-b border-blue-800/50 dark:border-cyan-500/50 relative z-40 shadow-md">
         <div className="flex animate-[marquee_20s_linear_infinite] gap-8">
           {INCIDENTS.map((inc, i) => (
             <span

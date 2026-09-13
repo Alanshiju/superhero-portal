@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   Activity,
   Radio,
-  Shield,
   ShieldAlert,
   Zap,
   Cpu,
@@ -98,11 +97,11 @@ export default function Operations() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 w-full">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8 border-b border-slate-200 dark:border-slate-800 pb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8 border-b border-slate-400 dark:border-slate-800 pb-8">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <Radio className="h-8 w-8 text-cyan-600 dark:text-cyan-400 animate-pulse" />
-            <h1 className="text-3xl font-bold font-mono text-slate-900 dark:text-white uppercase">
+            <Radio className="h-8 w-8 text-blue-700 dark:text-cyan-400 font-bold font-mono animate-pulse" />
+            <h1 className="text-3xl font-bold font-mono text-slate-950 dark:text-white font-extrabold uppercase">
               Operations & Telemetry
             </h1>
           </div>
@@ -114,8 +113,8 @@ export default function Operations() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Interactive SVG Topology Map */}
-        <div className="lg:col-span-2 bg-slate-100 dark:bg-slate-900/50 backdrop-blur-md rounded-xl p-6 border border-slate-200 dark:border-cyan-900/50 shadow-lg relative overflow-hidden flex flex-col min-h-[500px]">
-          <div className="absolute top-4 left-4 z-10 font-mono text-xs text-cyan-500 font-bold flex items-center gap-2">
+        <div className="lg:col-span-2 bg-white dark:bg-slate-900/50 backdrop-blur-md rounded-xl p-6 border border-slate-400 dark:border-cyan-900/50 shadow-lg relative overflow-hidden flex flex-col min-h-[500px]">
+          <div className="absolute top-4 left-4 z-10 font-mono text-xs text-blue-700 dark:text-cyan-500 font-bold flex items-center gap-2">
             <Activity className="w-4 h-4" /> LIVE KINETIC TOPOLOGY
           </div>
 
@@ -228,11 +227,11 @@ export default function Operations() {
         </div>
 
         {/* Selected Sector Drawer / Inspector */}
-        <div className="bg-white/80 dark:bg-slate-900/50 backdrop-blur-md rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-lg relative flex flex-col h-full transition-colors min-h-[500px]">
+        <div className="bg-white/80 dark:bg-slate-900/50 backdrop-blur-md rounded-xl p-6 border border-slate-400 dark:border-slate-800 shadow-lg relative flex flex-col h-full transition-colors min-h-[500px]">
           {selectedSector ? (
             <div className="h-full flex flex-col animate-in fade-in slide-in-from-right-8 duration-300">
-              <div className="mb-6 pb-4 border-b border-slate-200 dark:border-slate-800">
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white font-mono uppercase">
+              <div className="mb-6 pb-4 border-b border-slate-400 dark:border-slate-800">
+                <h2 className="text-2xl font-bold text-slate-950 dark:text-white font-extrabold font-mono uppercase">
                   {selectedSector.name}
                 </h2>
                 <div className="flex items-center gap-2 mt-2">
@@ -244,7 +243,7 @@ export default function Operations() {
                           ? "bg-orange-500/20 text-orange-500 border border-orange-500/50"
                           : selectedSector.threat === "MODERATE"
                             ? "bg-yellow-500/20 text-yellow-500 border border-yellow-500/50"
-                            : "bg-cyan-500/20 text-cyan-500 border border-cyan-500/50"
+                            : "bg-blue-200 dark:bg-cyan-500/20 text-blue-700 dark:text-cyan-500 border border-blue-400 dark:border-cyan-500/50"
                     }`}
                   >
                     THREAT: {selectedSector.threat}
@@ -256,7 +255,7 @@ export default function Operations() {
                 <div>
                   <div className="flex justify-between text-slate-500 dark:text-slate-400 mb-2">
                     <span>Kinetic Shield Integrity</span>
-                    <span className="text-slate-900 dark:text-white font-bold">
+                    <span className="text-slate-950 dark:text-white font-extrabold font-bold">
                       {selectedSector.load}%
                     </span>
                   </div>
@@ -275,25 +274,25 @@ export default function Operations() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded border border-slate-200 dark:border-slate-800">
+                  <div className="bg-slate-200 dark:bg-slate-950 p-4 rounded border border-slate-400 dark:border-slate-800">
                     <div className="text-slate-500 mb-1 flex items-center gap-1">
                       <Cpu className="w-4 h-4" /> Drones Active
                     </div>
-                    <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                    <div className="text-2xl font-bold text-slate-950 dark:text-white font-extrabold">
                       {selectedSector.drones}
                     </div>
                   </div>
-                  <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded border border-slate-200 dark:border-slate-800">
+                  <div className="bg-slate-200 dark:bg-slate-950 p-4 rounded border border-slate-400 dark:border-slate-800">
                     <div className="text-slate-500 mb-1 flex items-center gap-1">
                       <Zap className="w-4 h-4" /> Amb. Radiation
                     </div>
-                    <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                    <div className="text-2xl font-bold text-slate-950 dark:text-white font-extrabold">
                       {(100 - selectedSector.load).toFixed(1)} µSv/h
                     </div>
                   </div>
                 </div>
 
-                <div className="p-4 bg-slate-100 dark:bg-cyan-950/30 rounded border border-cyan-900/50 text-slate-700 dark:text-cyan-300 text-xs leading-relaxed">
+                <div className="p-4 bg-white dark:bg-cyan-950/30 rounded border border-cyan-900/50 text-slate-700 dark:text-cyan-300 text-xs leading-relaxed">
                   Aegis automated defense matrix is dynamically allocating
                   kinetic dampeners to this region based on localized structural
                   tension.

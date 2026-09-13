@@ -27,22 +27,22 @@ export default function Lab() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12 w-full">
-      <div className="flex items-center gap-3 mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
-        <Beaker className="h-8 w-8 text-cyan-600 dark:text-cyan-400" />
-        <h1 className="text-3xl font-bold font-mono text-slate-900 dark:text-white uppercase">
+      <div className="flex items-center gap-3 mb-8 border-b border-slate-400 dark:border-slate-800 pb-4">
+        <Beaker className="h-8 w-8 text-blue-700 dark:text-cyan-400 font-bold font-mono" />
+        <h1 className="text-3xl font-bold font-mono text-slate-950 dark:text-white font-extrabold uppercase">
           Interactive Lab
         </h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Controls */}
-        <div className="lg:col-span-1 space-y-8 bg-white/80 dark:bg-slate-900/50 backdrop-blur-md p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-lg">
-          <h2 className="font-mono font-bold text-xl text-slate-900 dark:text-white mb-6 uppercase border-b border-slate-200 dark:border-slate-800 pb-2">
+        <div className="lg:col-span-1 space-y-8 bg-white border-2 border-slate-200 shadow-lg shadow-slate-200/50 dark:bg-slate-900/70 dark:border-slate-800 dark:shadow-none rounded-xl p-6">
+          <h2 className="font-mono font-bold text-xl text-slate-950 dark:text-white font-extrabold mb-6 uppercase border-b border-slate-400 dark:border-slate-800 pb-2">
             Power Allocation
           </h2>
 
           <div className="space-y-3">
-            <div className="flex justify-between items-center text-sm font-mono text-slate-700 dark:text-cyan-400">
+            <div className="flex justify-between items-center text-sm font-mono text-slate-700 dark:text-blue-600 dark:text-cyan-400">
               <span className="flex items-center gap-2">
                 <Shield className="w-4 h-4" /> Kinetic Dampening
               </span>
@@ -55,7 +55,7 @@ export default function Lab() {
               value={powerLevels.integrity}
               onChange={(e) => handleSlider(e, "integrity")}
               onMouseEnter={playHover}
-              className="w-full accent-blue-600 dark:accent-cyan-500"
+              className="w-full bg-slate-200 dark:bg-slate-800 accent-blue-600 dark:accent-cyan-400"
             />
             <p className="text-xs text-slate-500 font-sans">
               Determines particle formation rigidity.
@@ -76,7 +76,7 @@ export default function Lab() {
               value={powerLevels.sensor}
               onChange={(e) => handleSlider(e, "sensor")}
               onMouseEnter={playHover}
-              className="w-full accent-emerald-600 dark:accent-emerald-500"
+              className="w-full bg-slate-200 dark:bg-slate-800 accent-blue-600 dark:accent-cyan-400"
             />
             <p className="text-xs text-slate-500 font-sans">
               Increases ambient particle vibration.
@@ -97,21 +97,21 @@ export default function Lab() {
               value={powerLevels.burst}
               onChange={(e) => handleSlider(e, "burst")}
               onMouseEnter={playHover}
-              className="w-full accent-amber-600 dark:accent-amber-500"
+              className="w-full bg-slate-200 dark:bg-slate-800 accent-blue-600 dark:accent-cyan-400"
             />
             <p className="text-xs text-slate-500 font-sans">
               Amplifies shockwave repulsion force.
             </p>
           </div>
 
-          <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
+          <div className="pt-4 border-t border-slate-400 dark:border-slate-800">
             <button
               onClick={toggleStressTest}
               onMouseEnter={playHover}
               className={`w-full flex items-center justify-center gap-2 py-3 rounded uppercase font-bold font-mono transition-all ${
                 stressTestActive
                   ? "bg-red-600 hover:bg-red-700 text-white animate-pulse"
-                  : "bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-900 dark:text-white"
+                  : "bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-950 dark:text-white font-extrabold"
               }`}
             >
               <Rocket className="w-5 h-5" />

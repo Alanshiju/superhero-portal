@@ -1,4 +1,8 @@
-import { useEffect, useRef } from "react";
+
+const fs = require("fs");
+let content = fs.readFileSync("src/components/KineticMesh.jsx", "utf8");
+
+const replacement = `import { useEffect, useRef } from "react";
 
 export default function KineticMesh() {
   const canvasRef = useRef(null);
@@ -15,8 +19,8 @@ export default function KineticMesh() {
       const dpr = window.devicePixelRatio || 1;
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
+      canvas.style.width = \`\${window.innerWidth}px\`;
+      canvas.style.height = \`\${window.innerHeight}px\`;
       ctx.scale(dpr, dpr);
     };
 
@@ -82,7 +86,7 @@ export default function KineticMesh() {
 
           if (distance < mouse.radius) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(${rgb}, ${(1 - distance / mouse.radius) * (isDark ? 1 : 0.6)})`;
+            ctx.strokeStyle = \`rgba(\${rgb}, \${(1 - distance / mouse.radius) * (isDark ? 1 : 0.6)})\`;
             ctx.lineWidth = 1.5;
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(mouse.x, mouse.y);
@@ -107,7 +111,7 @@ export default function KineticMesh() {
 
           if (distance < 130) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(${rgb}, ${(1 - distance / 130) * (isDark ? 1 : 0.4)})`;
+            ctx.strokeStyle = \`rgba(\${rgb}, \${(1 - distance / 130) * (isDark ? 1 : 0.4)})\`;
             ctx.lineWidth = 0.6;
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
@@ -134,4 +138,7 @@ export default function KineticMesh() {
       className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none"
     />
   );
-}
+}`;
+
+fs.writeFileSync("src/components/KineticMesh.jsx", replacement, "utf8");
+

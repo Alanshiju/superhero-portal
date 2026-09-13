@@ -4,7 +4,7 @@ import html2pdf from "html2pdf.js";
 import { Download, Loader2, Maximize2, X, MessageSquare } from "lucide-react";
 import { useSound } from "../context/SoundContext";
 import HeroAvatar from "./HeroAvatar";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CHAT_FLOW = [
   {
@@ -97,10 +97,20 @@ export default function HybridChatbot({ variant = "full", onClose }) {
   }, [messages, isAiTyping]);
 
   const handleSend = async () => {
-    if (!inputValue.trim() || isSending) return;
+    const trimmedInput = inputValue.trim();
+    if (!trimmedInput || isSending) return;
+
+    if (!isPhase2 && CHAT_FLOW[step].key === "email") {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(trimmedInput)) {
+        setMessages(prev => [...prev, { sender: "user", text: trimmedInput }, { sender: "system", text: "[ERROR] INVALID EMAIL FORMAT. PLEASE PROVIDE A VALID COMMS LINK." }]);
+        setInputValue("");
+        return;
+      }
+    }
 
     playMessage();
-    const userMessage = inputValue;
+    const userMessage = trimmedInput;
     setMessages((prev) => [...prev, { sender: "user", text: userMessage }]);
     setInputValue("");
 
@@ -120,7 +130,6 @@ export default function HybridChatbot({ variant = "full", onClose }) {
           playMessage();
         }, 600);
       } else {
-        // Step is grievance, immediate transition
         setMessages((prev) => [
           ...prev,
           {
@@ -163,10 +172,10 @@ export default function HybridChatbot({ variant = "full", onClose }) {
       };
 
       await emailjs.send(
-        import.meta.env.VITE_SERVICE_ID,
-        import.meta.env.VITE_TEMPLATE_ID,
+        import.meta.env.VITE_SERVICE_ID || "test_service",
+        import.meta.env.VITE_TEMPLATE_ID || "test_template",
         templateParams,
-        import.meta.env.VITE_PUBLIC_KEY,
+        import.meta.env.VITE_PUBLIC_KEY || "test_key",
       );
 
       const generatedId = `AEG-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -210,7 +219,7 @@ export default function HybridChatbot({ variant = "full", onClose }) {
     }
 
     try {
-      const apiKey = import.meta.env.VITE_AI_API_KEY;
+      const apiKey = import.meta.env.VITE_AI_API_KEY || "test_ai";
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
         {
@@ -262,11 +271,11 @@ export default function HybridChatbot({ variant = "full", onClose }) {
 
   if (variant === "floating") {
     return (
-      <div className="w-full max-w-sm bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-xl border border-cyan-500/50 rounded-xl shadow-[0_0_30px_rgba(6,182,212,0.3)] flex flex-col h-[500px] overflow-hidden">
-        <div className="bg-cyan-900/80 p-3 flex justify-between items-center border-b border-cyan-500/50">
+      <div className="w-full max-w-sm bg-white/95 border border-slate-300 dark:bg-slate-950/95 backdrop-blur-xl border border-cyan-500/50 rounded-xl shadow-[0_0_30px_rgba(6,182,212,0.3)] flex flex-col h-[500px] overflow-hidden">
+        <div className="bg-blue-800 dark:bg-cyan-900/80 p-3 flex justify-between items-center border-b border-cyan-500/50">
           <div className="flex items-center gap-2">
             <HeroAvatar className="w-8 h-8 shrink-0" />
-            <span className="font-bold text-sm text-cyan-50 font-mono tracking-wider">
+            <span className="font-bold text-sm text-white font-mono tracking-wider">
               AEGIS COMM-LINK
             </span>
           </div>
@@ -307,10 +316,10 @@ export default function HybridChatbot({ variant = "full", onClose }) {
               <div
                 className={`max-w-[85%] p-2 rounded-md shadow-sm text-xs ${
                   msg.sender === "user"
-                    ? "bg-cyan-700 text-white border border-cyan-600"
+                    ? "bg-blue-700 dark:bg-cyan-700 text-white border border-blue-800 dark:border-cyan-600"
                     : msg.sender === "system"
                       ? "bg-emerald-950 text-emerald-400 border border-emerald-800 w-full text-center font-bold"
-                      : "bg-slate-800 text-cyan-300 border border-cyan-900/50"
+                      : "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-cyan-300 border border-slate-300 dark:border-cyan-900/50"
                 }`}
               >
                 {msg.sender === "aegis" && (
@@ -331,14 +340,14 @@ export default function HybridChatbot({ variant = "full", onClose }) {
           )}
         </div>
 
-        <div className="p-3 bg-slate-900 border-t border-cyan-900/50 flex gap-2">
+        <div className="p-3 bg-slate-100 dark:bg-slate-900 border-t border-slate-300 dark:border-cyan-900/50 flex gap-2">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
             disabled={isSending}
-            className="flex-1 bg-slate-800 border border-slate-700 text-white px-3 py-2 text-sm rounded outline-none focus:border-cyan-500 font-mono disabled:opacity-50"
+            className="flex-1 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-950 dark:text-white px-3 py-2 text-sm rounded outline-none focus:border-blue-600 dark:focus:border-cyan-500 font-mono disabled:opacity-50"
             placeholder="Reply..."
           />
           <button
@@ -348,7 +357,7 @@ export default function HybridChatbot({ variant = "full", onClose }) {
             }}
             onMouseEnter={playHover}
             disabled={isSending}
-            className="bg-cyan-600 hover:bg-cyan-500 text-white px-3 py-2 rounded font-bold transition-all disabled:opacity-50"
+            className="bg-blue-700 dark:bg-cyan-600 hover:bg-blue-800 dark:hover:bg-cyan-500 text-white px-3 py-2 rounded font-bold transition-all disabled:opacity-50"
           >
             <MessageSquare className="w-4 h-4" />
           </button>
@@ -359,15 +368,15 @@ export default function HybridChatbot({ variant = "full", onClose }) {
 
   // FULL VARIANT
   return (
-    <div className="w-full max-w-3xl mx-auto p-1 bg-gradient-to-b from-blue-700 to-cyan-600 dark:from-cyan-900/80 dark:to-slate-900/80 rounded-xl shadow-[0_0_40px_rgba(6,182,212,0.2)] mt-8 backdrop-blur-sm flex flex-col">
-      <div className="bg-slate-50/90 dark:bg-slate-950/80 backdrop-blur-md p-4 sm:p-6 rounded-lg flex flex-col h-[650px] transition-colors border border-slate-200 dark:border-slate-800 relative">
-        <div className="flex items-center gap-4 mb-4 pb-4 border-b border-slate-200 dark:border-slate-800">
+    <div className="w-full max-w-3xl mx-auto p-1 bg-gradient-to-b from-slate-300 to-slate-400 dark:from-cyan-900/80 dark:to-slate-900/80 dark:from-cyan-900/80 dark:to-slate-900/80 rounded-xl shadow-[0_0_40px_rgba(6,182,212,0.2)] mt-8 backdrop-blur-sm flex flex-col">
+      <div className="bg-slate-200/90 dark:bg-slate-950/80 backdrop-blur-md p-4 sm:p-6 rounded-lg flex flex-col h-[650px] transition-colors border border-slate-400 dark:border-slate-800 relative">
+        <div className="flex items-center gap-4 mb-4 pb-4 border-b border-slate-400 dark:border-slate-800">
           <HeroAvatar className="w-16 h-16 shrink-0" />
           <div className="flex flex-col">
             <span className="font-bold text-lg text-slate-900 dark:text-white font-mono">
               SECURE UPLINK: AEGIS
             </span>
-            <span className="text-xs text-cyan-600 dark:text-cyan-400 font-mono tracking-widest animate-pulse">
+            <span className="text-xs text-blue-700 dark:text-cyan-400 font-mono tracking-widest animate-pulse">
               ESTABLISHED • ENCRYPTED
             </span>
           </div>
@@ -411,11 +420,11 @@ export default function HybridChatbot({ variant = "full", onClose }) {
                     ? "bg-blue-600 dark:bg-slate-800 text-white dark:text-cyan-100 border border-blue-700 dark:border-slate-700"
                     : msg.sender === "system"
                       ? "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 w-full text-center my-4 font-bold tracking-wide"
-                      : "bg-slate-200 dark:bg-cyan-950/50 text-slate-800 dark:text-cyan-400 border border-slate-300 dark:border-cyan-900/50"
+                      : "bg-white dark:bg-cyan-950/50 text-slate-900 dark:text-cyan-400 border border-slate-300 dark:border-cyan-900/50 shadow-sm"
                 }`}
               >
                 {msg.sender === "aegis" && (
-                  <span className="text-xs text-blue-800 dark:text-cyan-500 block mb-1 font-bold">
+                  <span className="text-xs text-blue-800 dark:text-cyan-500 font-bold block mb-1 font-bold">
                     AEGIS (VANCE, A.):
                   </span>
                 )}
@@ -426,7 +435,7 @@ export default function HybridChatbot({ variant = "full", onClose }) {
 
           {isSending && isPhase2 && aiHistory.length === 1 && (
             <div className="flex justify-start">
-              <div className="bg-slate-200 dark:bg-cyan-950/50 text-slate-800 dark:text-cyan-400 border border-slate-300 dark:border-cyan-900/50 p-3 rounded-md max-w-[85%] font-mono text-xs flex items-center gap-2">
+              <div className="bg-white dark:bg-cyan-950/50 text-slate-900 dark:text-cyan-400 border border-slate-300 dark:border-cyan-900/50 shadow-sm p-3 rounded-md max-w-[85%] font-mono text-xs flex items-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin text-cyan-500" />
                 AEGIS IS ANALYZING INCIDENT...
               </div>
@@ -443,14 +452,14 @@ export default function HybridChatbot({ variant = "full", onClose }) {
           )}
         </div>
 
-        <div className="flex gap-2 pt-4 border-t border-slate-200 dark:border-slate-800 relative">
+        <div className="flex gap-2 pt-4 border-t border-slate-400 dark:border-slate-800 relative">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
             disabled={isSending}
-            className="flex-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white px-4 py-3 rounded outline-none focus:border-blue-500 dark:focus:border-cyan-500 transition-colors font-mono disabled:opacity-50"
+            className="flex-1 bg-white dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 text-slate-950 dark:text-white px-4 py-3 rounded outline-none focus:border-blue-600 dark:focus:border-cyan-500 transition-colors font-mono disabled:opacity-50"
             placeholder={
               isSending
                 ? "Processing..."

@@ -7,6 +7,7 @@ import Lab from "./pages/Lab";
 import Layout from "./components/Layout";
 import ScrollToTop from "./components/ScrollToTop";
 import CrisisCalibrator from "./components/CrisisCalibrator";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/intel" element={<Intel />} />
           <Route path="/operations" element={<Operations />} />
           <Route path="/lab" element={<Lab />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
     </Router>

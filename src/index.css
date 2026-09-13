@@ -1,19 +1,9 @@
 @import "tailwindcss";
 
-@layer base {
-  body {
-    @apply bg-slate-50 dark:bg-slate-950;
-  }
-}
-
-/* 
-  Forces Tailwind to use class-based dark mode instead of OS system preferences 
-*/
-@custom-variant dark (&:is(.dark *));
+@variant dark (&:where(.dark, .dark *));
 
 @theme {
   --animate-scan: scan 2s ease-in-out infinite;
-
   @keyframes scan {
     0%,
     100% {
@@ -24,5 +14,12 @@
       transform: translateY(200px);
       opacity: 1;
     }
+  }
+}
+
+/* Force crisp text rendering and solid contrast roots */
+@layer base {
+  body {
+    @apply bg-slate-50 dark:bg-slate-950 transition-colors duration-200 antialiased;
   }
 }

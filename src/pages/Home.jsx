@@ -37,19 +37,19 @@ function SurveillanceTerminal() {
   }, []);
 
   return (
-    <div className="bg-white/90 dark:bg-slate-950/80 border border-slate-300 dark:border-cyan-900/50 p-6 rounded-xl font-mono text-sm shadow-xl dark:shadow-[0_0_20px_rgba(6,182,212,0.1)] backdrop-blur-md relative overflow-hidden transition-colors h-full flex flex-col">
+    <div className="bg-white dark:bg-slate-950/80 border border-slate-400 dark:border-cyan-900/50 p-6 rounded-xl font-mono text-sm shadow-xl dark:shadow-[0_0_20px_rgba(6,182,212,0.1)] backdrop-blur-md relative overflow-hidden transition-colors h-full flex flex-col">
       {isScanning && (
         <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/50 dark:bg-cyan-500/50 shadow-[0_0_10px_rgba(59,130,246,1)] dark:shadow-[0_0_10px_rgba(6,182,212,1)] animate-[scan_2s_ease-in-out_infinite]" />
       )}
 
-      <div className="flex items-center gap-2 mb-4 text-blue-700 dark:text-cyan-500 border-b border-slate-200 dark:border-cyan-900/50 pb-2">
+      <div className="flex items-center gap-2 mb-4 text-blue-700 dark:text-blue-700 dark:text-cyan-500 border-b border-slate-400 dark:border-cyan-900/50 pb-2">
         <Scan className={`w-5 h-5 ${isScanning ? "animate-spin" : ""}`} />
         <span className="font-bold tracking-widest uppercase">
           Live Surveillance Feed
         </span>
       </div>
 
-      <div className="space-y-2 text-slate-800 dark:text-cyan-400 flex-1">
+      <div className="space-y-2 text-slate-800 dark:text-blue-600 dark:text-cyan-400 flex-1">
         {lines.map((line, idx) => (
           <div key={idx} className="flex gap-2">
             <span className="text-slate-400 dark:text-slate-600">&gt;</span>
