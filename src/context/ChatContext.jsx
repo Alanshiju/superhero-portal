@@ -244,6 +244,9 @@ export function ChatProvider({ children }) {
           if (clonedElement) {
             clonedElement.style.display = "block";
           }
+          // Remove all stylesheets to prevent html2canvas from seeing oklch variables
+          const styles = clonedDoc.querySelectorAll("style, link[rel=\"stylesheet\"]");
+          styles.forEach(s => s.remove());
         }
       },
       jsPDF: { unit: "in", format: "letter", orientation: "portrait" }
