@@ -30,7 +30,7 @@ export default function Lab() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12 w-full">
+    <div className="animate-in fade-in slide-in-from-bottom-8 zoom-in-95 duration-700 ease-out max-w-6xl mx-auto px-4 py-12 w-full">
       <div className="flex items-center gap-3 mb-8 border-b border-slate-400 dark:border-slate-800 pb-4">
         <Beaker className="h-8 w-8 text-blue-700 dark:text-cyan-400 font-bold font-mono" />
         <h1 className="text-3xl font-bold font-mono text-slate-950 dark:text-white font-extrabold uppercase">

@@ -1,7 +1,14 @@
 import { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function KineticMesh() {
   const canvasRef = useRef(null);
+  const location = useLocation();
+  const burstRef = useRef(0);
+
+  useEffect(() => {
+    burstRef.current = 10;
+  }, [location.pathname]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -45,8 +52,9 @@ export default function KineticMesh() {
       }
 
       update() {
-        this.x += this.vx;
-        this.y += this.vy;
+        const speedMult = 1 + burstRef.current * 0.5;
+        this.x += this.vx * speedMult;
+        this.y += this.vy * speedMult;
 
         if (this.x < 0 || this.x > window.innerWidth) this.vx *= -1;
         if (this.y < 0 || this.y > window.innerHeight) this.vy *= -1;
@@ -55,18 +63,25 @@ export default function KineticMesh() {
       draw(isDark) {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = isDark ? "rgba(6, 182, 212, 0.8)" : "rgba(30, 58, 138, 0.5)";
+        ctx.fillStyle = isDark
+          ? "rgba(6, 182, 212, 0.8)"
+          : "rgba(30, 58, 138, 0.5)";
         ctx.fill();
       }
     }
 
     const nodes = [];
-    const numNodes = Math.min(120, (window.innerWidth * window.innerHeight) / 12000);
+    const numNodes = Math.min(
+      120,
+      (window.innerWidth * window.innerHeight) / 12000,
+    );
     for (let i = 0; i < numNodes; i++) {
       nodes.push(new Node());
     }
 
     const animate = () => {
+      if (burstRef.current > 0)
+        burstRef.current = Math.max(0, burstRef.current - 0.2);
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       const isDark = document.documentElement.classList.contains("dark");
       const rgb = isDark ? "6, 182, 212" : "30, 58, 138";
@@ -90,8 +105,10 @@ export default function KineticMesh() {
 
             const angle = Math.atan2(dy, dx);
             const orbitSpeed = 0.05;
-            const targetX = mouse.x - Math.cos(angle + orbitSpeed) * distance * 0.8;
-            const targetY = mouse.y - Math.sin(angle + orbitSpeed) * distance * 0.8;
+            const targetX =
+              mouse.x - Math.cos(angle + orbitSpeed) * distance * 0.8;
+            const targetY =
+              mouse.y - Math.sin(angle + orbitSpeed) * distance * 0.8;
 
             node.x += (targetX - node.x) * 0.05;
             node.y += (targetY - node.y) * 0.05;

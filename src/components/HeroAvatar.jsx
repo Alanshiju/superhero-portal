@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function HeroAvatar({ className = "w-48 h-48" }) {
+export default function HeroAvatar({ className = "w-48 h-48", eyeOffset = { x: 0, y: 0 } }) {
   return (
     <div className={`relative ${className} group`}>
       {/* Glow Behind */}
@@ -76,14 +76,17 @@ export default function HeroAvatar({ className = "w-48 h-48" }) {
         />
 
         {/* Visor Glare / Scanning Line */}
-        <path
-          d="M 32,48 L 68,48"
-          stroke="#ffffff"
-          strokeWidth="2"
-          strokeLinecap="round"
-          opacity="0.8"
-          className="animate-pulse"
-        />
+        <g style={{ transform: `translate(${eyeOffset.x}px, ${eyeOffset.y}px)`, transition: "transform 0.1s ease-out" }}>
+          <path
+            d="M 38,48 L 62,48"
+            stroke="#ffffff"
+            strokeWidth="3"
+            strokeLinecap="round"
+            opacity="1"
+            className="animate-pulse"
+            style={{ filter: "drop-shadow(0 0 5px #22d3ee)" }}
+          />
+        </g>
 
         {/* Chest/Neck Kinetic Core */}
         <circle cx="50" cy="78" r="4" fill="#06b6d4" />

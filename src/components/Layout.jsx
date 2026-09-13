@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import KineticMesh from "./KineticMesh";
+import GuardianBackdrop from "./GuardianBackdrop";
 
 export default function Layout({ children }) {
   const { pathname } = useLocation();
@@ -17,6 +18,7 @@ export default function Layout({ children }) {
   return (
     <div className="min-h-screen text-slate-900 dark:text-slate-100 font-sans transition-colors duration-300 flex flex-col selection:bg-cyan-500/30 relative isolate overflow-x-hidden pb-6">
       <KineticMesh />
+      <GuardianBackdrop />
 
       {/* Perimeter Glow */}
       <div
@@ -31,7 +33,6 @@ export default function Layout({ children }) {
 
       {/* Persistent Aegis HUD */}
       <div className="fixed bottom-0 left-0 w-full z-50 flex flex-col pointer-events-none select-none">
-        
         {/* Mobile Compressed HUD */}
         <div className="md:hidden flex items-center justify-center gap-2 py-1.5 px-3 bg-white/95 dark:bg-slate-950/95 border-t border-slate-300 dark:border-cyan-900/50 text-[10px] font-mono text-slate-800 dark:text-cyan-400 shadow-md">
           <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />

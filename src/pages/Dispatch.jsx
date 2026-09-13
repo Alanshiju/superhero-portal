@@ -3,7 +3,7 @@ import { ShieldAlert } from 'lucide-react';
 
 export default function Dispatch() {
   return (
-    <div className="min-h-[calc(100vh-80px)] flex flex-col items-center justify-center p-4">
+    <div className="animate-in fade-in slide-in-from-bottom-8 zoom-in-95 duration-700 ease-out min-h-[calc(100vh-80px)] flex flex-col items-center justify-center p-4">
       <div className="text-center mb-8">
         <div className="inline-flex items-center justify-center p-3 bg-red-500/10 rounded-full mb-4 animate-pulse">
           <ShieldAlert className="w-10 h-10 text-red-500" />

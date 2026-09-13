@@ -96,7 +96,7 @@ export default function Operations() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12 w-full">
+    <div className="animate-in fade-in slide-in-from-bottom-8 zoom-in-95 duration-700 ease-out max-w-7xl mx-auto px-4 py-8 w-full">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8 border-b border-slate-400 dark:border-slate-800 pb-8">
         <div>
           <div className="flex items-center gap-3 mb-2">
@@ -111,9 +111,9 @@ export default function Operations() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Interactive SVG Topology Map */}
-        <div className="lg:col-span-2 bg-white dark:bg-slate-900/50 backdrop-blur-md rounded-xl p-6 border border-slate-400 dark:border-cyan-900/50 shadow-lg relative overflow-hidden flex flex-col min-h-[500px]">
+        <div className="lg:col-span-2 min-h-[420px] w-full bg-white dark:bg-slate-900/50 backdrop-blur-md rounded-xl p-6 border border-slate-400 dark:border-cyan-900/50 shadow-lg relative overflow-hidden flex flex-col">
           <div className="absolute top-4 left-4 z-10 font-mono text-xs text-blue-700 dark:text-cyan-500 font-bold flex items-center gap-2">
             <Activity className="w-4 h-4" /> LIVE KINETIC TOPOLOGY
           </div>

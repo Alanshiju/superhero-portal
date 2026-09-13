@@ -98,7 +98,7 @@ export default function Home() {
   const { playHover, playClick } = useSound();
 
   return (
-    <div className="min-h-screen relative pb-20">
+    <div className="animate-in fade-in slide-in-from-bottom-8 zoom-in-95 duration-700 ease-out min-h-screen relative pb-20">
       <HeroSection />
 
       {/* Main Content Grid */}

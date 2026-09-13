@@ -23,9 +23,8 @@ export default function Intel() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12 w-full">
+    <div className="animate-in fade-in slide-in-from-bottom-8 zoom-in-95 duration-700 ease-out max-w-7xl mx-auto px-4 py-12 w-full">
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8 border-b border-slate-400 dark:border-slate-800 pb-8">
-        <HeroAvatar className="w-24 h-24 shrink-0" />
         <div>
           <div className="flex items-center gap-3 mb-2">
             <Database className="h-8 w-8 text-blue-700 dark:text-cyan-400 font-bold font-mono" />
@@ -82,8 +81,8 @@ export default function Intel() {
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="bg-white border-2 border-slate-200 shadow-lg shadow-slate-200/50 dark:bg-slate-900/70 dark:border-slate-800 dark:shadow-none rounded-xl p-8 transition-colors">
                 <h2 className="text-2xl font-bold text-slate-950 dark:text-white font-extrabold mb-4 font-mono uppercase flex items-center gap-2">
-                  <Activity className="w-6 h-6 text-blue-700 dark:text-cyan-500" /> The Genesis
-                  Incident
+                  <Activity className="w-6 h-6 text-blue-700 dark:text-cyan-500" />{" "}
+                  The Genesis Incident
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   Project Kinetic-0 was meant to revolutionize clean energy at
@@ -104,7 +103,8 @@ export default function Intel() {
 
               <div className="bg-white border-2 border-slate-200 shadow-lg shadow-slate-200/50 dark:bg-slate-900/70 dark:border-slate-800 dark:shadow-none rounded-xl p-8 transition-colors">
                 <h2 className="text-2xl font-bold text-slate-950 dark:text-white font-extrabold mb-6 font-mono uppercase flex items-center gap-2">
-                  <FileText className="w-6 h-6 text-blue-700 dark:text-cyan-500" /> Archive Logs
+                  <FileText className="w-6 h-6 text-blue-700 dark:text-cyan-500" />{" "}
+                  Archive Logs
                 </h2>
                 <div className="space-y-4">
                   {[
@@ -157,7 +157,8 @@ export default function Intel() {
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="bg-white border-2 border-slate-200 shadow-lg shadow-slate-200/50 dark:bg-slate-900/70 dark:border-slate-800 dark:shadow-none rounded-xl p-8 transition-colors">
                 <h2 className="text-2xl font-bold text-slate-950 dark:text-white font-extrabold mb-4 font-mono uppercase flex items-center gap-2">
-                  <Lock className="w-6 h-6 text-blue-700 dark:text-cyan-500" /> The Kinetic Codex
+                  <Lock className="w-6 h-6 text-blue-700 dark:text-cyan-500" />{" "}
+                  The Kinetic Codex
                 </h2>
                 <ul className="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed">
                   <li className="flex gap-4">
@@ -209,8 +210,8 @@ export default function Intel() {
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="bg-white border-2 border-slate-200 shadow-lg shadow-slate-200/50 dark:bg-slate-900/70 dark:border-slate-800 dark:shadow-none rounded-xl p-8 transition-colors">
                 <h2 className="text-2xl font-bold text-slate-950 dark:text-white font-extrabold mb-4 font-mono uppercase flex items-center gap-2">
-                  <Server className="w-6 h-6 text-blue-700 dark:text-cyan-500" /> Equipment & Tech
-                  Specs
+                  <Server className="w-6 h-6 text-blue-700 dark:text-cyan-500" />{" "}
+                  Equipment & Tech Specs
                 </h2>
                 <div className="space-y-4">
                   <div className="p-4 bg-slate-200 dark:bg-slate-950/80 rounded border border-slate-100 dark:border-slate-800 hover:border-blue-400 dark:border-cyan-500/50 transition-colors group">
@@ -289,8 +290,8 @@ export default function Intel() {
 
           <div className="bg-white dark:bg-slate-900/50 backdrop-blur-sm border border-slate-400 dark:border-slate-800 p-4 rounded-lg">
             <h3 className="font-mono text-sm font-bold text-slate-800 dark:text-white mb-3 flex items-center gap-2">
-              <Fingerprint className="w-4 h-4 text-blue-700 dark:text-cyan-500" /> Biometric
-              Signature
+              <Fingerprint className="w-4 h-4 text-blue-700 dark:text-cyan-500" />{" "}
+              Biometric Signature
             </h3>
             <div className="space-y-2 font-mono text-xs">
               <div className="flex justify-between">
@@ -313,7 +314,9 @@ export default function Intel() {
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Core Temp:</span>
-                <span className="text-slate-900 dark:text-blue-600 dark:text-cyan-400">0.02K</span>
+                <span className="text-slate-900 dark:text-blue-600 dark:text-cyan-400">
+                  0.02K
+                </span>
               </div>
             </div>
           </div>
