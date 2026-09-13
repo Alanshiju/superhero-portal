@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import HeroSection from "../components/HeroSection";
 import ThreatRadar from "../components/ThreatRadar";
 import HybridChatbot from "../components/Chatbot";
+import HeroAvatar from "../components/HeroAvatar";
 import { Scan, AlertTriangle, MessageSquare } from "lucide-react";
 import { useSound } from "../context/SoundContext";
 
@@ -88,6 +89,12 @@ function SurveillanceTerminal() {
 
 export default function Home() {
   const [showChat, setShowChat] = useState(true);
+
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setShowChat(false);
+    }
+  }, []);
   const { playHover, playClick } = useSound();
 
   return (
@@ -103,9 +110,9 @@ export default function Home() {
       </div>
 
       {/* Floating Chatbot Widget */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
+      <div className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 flex flex-col items-end pointer-events-none">
         {showChat && (
-          <div className="mb-4 pointer-events-auto animate-in slide-in-from-bottom-5 duration-300 origin-bottom-right">
+          <div className="pointer-events-auto animate-in slide-in-from-bottom-5 duration-300 origin-bottom-right fixed inset-x-3 bottom-20 z-50 max-h-[75vh] md:max-h-none md:relative md:inset-x-auto md:bottom-auto md:mb-4 rounded-2xl shadow-2xl flex justify-center">
             <HybridChatbot
               variant="floating"
               onClose={() => setShowChat(false)}
@@ -113,17 +120,26 @@ export default function Home() {
           </div>
         )}
         {!showChat && (
-          <button
-            onClick={() => {
-              playClick();
-              setShowChat(true);
-            }}
-            onMouseEnter={playHover}
-            className="pointer-events-auto bg-cyan-600 hover:bg-cyan-500 text-white rounded-full p-4 shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-transform hover:scale-110 flex items-center justify-center animate-bounce"
-            title="Open Aegis Comm-Link"
-          >
-            <MessageSquare className="w-6 h-6" />
-          </button>
+          <div className="pointer-events-auto relative group">
+            <button
+              onClick={() => {
+                playClick();
+                setShowChat(true);
+              }}
+              onMouseEnter={playHover}
+              className="bg-slate-900 border-2 border-cyan-500 hover:bg-slate-800 rounded-full p-2 shadow-[0_0_20px_rgba(6,182,212,0.6)] transition-transform hover:scale-110 flex items-center justify-center animate-bounce"
+              title="Open Aegis Comm-Link"
+            >
+              <span className="absolute -top-1 -right-1 flex h-4 w-4">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-4 w-4 bg-cyan-500 border border-slate-900"></span>
+              </span>
+              <HeroAvatar className="w-10 h-10 shrink-0" />
+            </button>
+            <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap px-3 py-1.5 bg-slate-900 border border-cyan-500/50 text-cyan-300 text-xs font-mono font-bold rounded pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity hidden md:block">
+              Aegis Comm-Link Active
+            </div>
+          </div>
         )}
       </div>
     </div>
