@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+/* 
+  Forces Tailwind to use class-based dark mode instead of OS system preferences 
+*/
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --animate-scan: scan 2s ease-in-out infinite;
+
+  @keyframes scan {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    50% {
+      transform: translateY(200px);
+      opacity: 1;
+    }
+  }
+}

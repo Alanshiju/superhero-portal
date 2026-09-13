@@ -115,10 +115,11 @@ export default function KineticMesh() {
     };
   }, []);
 
-  return (
+return (
     <canvas
       ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full -z-10 bg-slate-950 pointer-events-none"
+      // Removed the background color so the App theme shows through
+      className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none"
     />
   );
 }
