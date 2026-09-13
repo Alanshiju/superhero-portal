@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 import html2pdf from "html2pdf.js";
+import { toast } from "react-toastify";
 import { Download, Loader2, Maximize2, X, MessageSquare } from "lucide-react";
 import { useSound } from "../context/SoundContext";
 import HeroAvatar from "./HeroAvatar";
@@ -181,6 +182,7 @@ export default function HybridChatbot({ variant = "full", onClose }) {
       const generatedId = `AEG-${Math.floor(1000 + Math.random() * 9000)}`;
       setCaseId(generatedId);
       playAlert();
+      toast.success("AEGIS DISPATCH: Incident telemetry transmitted to commander inbox.");
 
       setMessages((prev) => [
         ...prev,
@@ -198,6 +200,7 @@ export default function HybridChatbot({ variant = "full", onClose }) {
       await sendToAI(systemPrompt, true);
     } catch (error) {
       console.error("FAILED...", error);
+      toast.error("COMM ERROR: Uplink compromised. Distress signal cached locally.");
       setMessages((prev) => [
         ...prev,
         { sender: "system", text: "[ERROR] Signal lost. Dispatch failed." },
@@ -258,6 +261,7 @@ export default function HybridChatbot({ variant = "full", onClose }) {
   };
 
   const downloadReceipt = () => {
+    toast.info("ENCRYPTED DOSSIER: Compiling PDF Mission Brief...");
     const element = document.getElementById("receipt-pdf");
     const opt = {
       margin: 1,

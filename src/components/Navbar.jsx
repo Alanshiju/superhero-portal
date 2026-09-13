@@ -16,6 +16,7 @@ import {
 import { useTheme } from "../context/ThemeContext";
 import { useSound } from "../context/SoundContext";
 import emailjs from "@emailjs/browser";
+import { toast } from "react-toastify";
 
 const NAV_LINKS = [
   { path: "/", label: "Base", icon: Shield },
@@ -58,17 +59,19 @@ export default function Navbar() {
   const triggerRapidBeacon = () => {
     playClick();
     if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser.");
+      toast.error("SENSOR FAULT: Geolocation is not supported by your browser.");
       return;
     }
 
     setBeaconStatus("locating");
+    toast.warn("BEACON ENGAGED: Triangulating GPS coordinates...");
 
     try {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const coords = `${position.coords.latitude}, ${position.coords.longitude}`;
           playAlert();
+          toast.success("COORDINATES LOCKED: Priority alert dispatched to Aegis Grid.");
 
           // Flash viewport amber/cyan via body class
           document.body.classList.add(
@@ -106,13 +109,13 @@ export default function Navbar() {
         (err) => {
           console.error(err);
           setBeaconStatus("idle");
-          alert("Unable to retrieve location or permission denied.");
+          toast.error("SENSOR FAULT: Location access denied. Manual dispatch required.");
         },
       );
     } catch (err) {
       console.error(err);
       setBeaconStatus("idle");
-      alert("Geolocation failed unexpectedly.");
+      toast.error("SENSOR FAULT: Geolocation failed unexpectedly.");
     }
   };
 
@@ -218,6 +221,11 @@ export default function Navbar() {
                   initAudio();
                   toggleSfx();
                   playClick();
+                  if (sfxEnabled) {
+                    toast.info("ACOUSTIC INTERFACE: Silent protocol engaged.");
+                  } else {
+                    toast.info("ACOUSTIC INTERFACE: Audio synthesizers active.");
+                  }
                 }}
                 onMouseEnter={playHover}
                 className="p-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-cyan-400 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors focus:outline-none"
@@ -235,6 +243,7 @@ export default function Navbar() {
                   initAudio();
                   toggleTheme();
                   playClick();
+                  toast.info("INTERFACE SHIFT: Display spectrum updated.");
                 }}
                 onMouseEnter={playHover}
                 className="p-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-cyan-400 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors focus:outline-none"

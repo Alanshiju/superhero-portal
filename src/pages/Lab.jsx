@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ShieldSimulator from "../components/ShieldSimulator";
 import { Beaker, Shield, Activity, Zap, Rocket } from "lucide-react";
 import { useSound } from "../context/SoundContext";
+import { toast } from "react-toastify";
 
 export default function Lab() {
   const [powerLevels, setPowerLevels] = useState({
@@ -22,7 +23,10 @@ export default function Lab() {
 
   const toggleStressTest = () => {
     playAlert();
-    setStressTestActive((prev) => !prev);
+    setStressTestActive((prev) => {
+      if (!prev) toast.warn("SIMULATION: High-velocity kinetic bombardment initiated.");
+      return !prev;
+    });
   };
 
   return (
