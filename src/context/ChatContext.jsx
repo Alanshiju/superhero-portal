@@ -229,13 +229,26 @@ export function ChatProvider({ children }) {
   const downloadMissionBrief = () => {
     toast.info("ENCRYPTED DOSSIER: Compiling PDF Mission Brief...");
     const element = document.getElementById("receipt-pdf");
+    if (!element) return;
+  
     const opt = {
-      margin: 1,
-      filename: `${caseId}-Mission-Brief.pdf`,
+      margin: [0.5, 0.5, 0.5, 0.5],
+      filename: `${caseId || "AEGIS"}-Mission-Brief.pdf`,
       image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        onclone: (clonedDoc) => {
+          const clonedElement = clonedDoc.getElementById("receipt-pdf");
+          if (clonedElement) {
+            clonedElement.style.display = "block";
+          }
+        }
+      },
+      jsPDF: { unit: "in", format: "letter", orientation: "portrait" }
     };
+  
     html2pdf().set(opt).from(element).save();
   };
 
@@ -256,31 +269,55 @@ export function ChatProvider({ children }) {
       }}
     >
       {children}
-      {/* HIDDEN PDF TEMPLATE */}
-      <div style={{ display: "none" }}>
-        <div id="receipt-pdf" style={{ padding: "40px", fontFamily: "monospace", color: "#0f172a", backgroundColor: "#ffffff" }}>
-          <div style={{ borderBottom: "2px solid #0f172a", paddingBottom: "20px", marginBottom: "20px" }}>
-            <h1 style={{ margin: 0, fontSize: "24px", textTransform: "uppercase", letterSpacing: "2px" }}>Aegis Command Center</h1>
-            <h2 style={{ margin: "5px 0 0 0", fontSize: "14px", color: "#64748b" }}>OFFICIAL MISSION BRIEF</h2>
+      {/* Hidden PDF Container - zero Tailwind classes to prevent oklch parsing */}
+      <div style={{ position: "absolute", left: "-9999px", top: "-9999px" }}>
+        <div
+          id="receipt-pdf"
+          style={{
+            width: "700px",
+            padding: "40px",
+            backgroundColor: "#ffffff",
+            color: "#0f172a",
+            fontFamily: "Courier, monospace",
+            boxSizing: "border-box"
+          }}
+        >
+          <div style={{ borderBottom: "2px solid #0f172a", paddingBottom: "16px", marginBottom: "24px" }}>
+            <h1 style={{ margin: 0, fontSize: "22px", textTransform: "uppercase", letterSpacing: "2px", color: "#0f172a" }}>
+              AEGIS COMMAND // DISPATCH DOSSIER
+            </h1>
+            <p style={{ margin: "4px 0 0 0", fontSize: "12px", color: "#475569" }}>
+              OFFICIAL CITIZEN DISTRESS TELEMETRY RECEIPT
+            </p>
           </div>
-          <div style={{ marginBottom: "30px" }}>
-            <p><strong>CASE ID:</strong> {caseId}</p>
-            <p><strong>TIMESTAMP:</strong> {new Date().toLocaleString()}</p>
-            <p><strong>STATUS:</strong> DISPATCHED</p>
+
+          <div style={{ marginBottom: "20px", padding: "12px", backgroundColor: "#f1f5f9", borderLeft: "4px solid #0284c7" }}>
+            <p style={{ margin: "3px 0", fontSize: "13px" }}><strong>CASE DESIGNATION:</strong> {caseId || "AEG-TRANSMIT"}</p>
+            <p style={{ margin: "3px 0", fontSize: "13px" }}><strong>TIMESTAMP:</strong> {new Date().toLocaleString()}</p>
+            <p style={{ margin: "3px 0", fontSize: "13px" }}><strong>GRID STATUS:</strong> INTERCEPTION UNITS DEPLOYED</p>
           </div>
-          <div style={{ backgroundColor: "#f1f5f9", padding: "20px", borderRadius: "4px", marginBottom: "30px" }}>
-            <h3 style={{ marginTop: 0, borderBottom: "1px solid #cbd5e1", paddingBottom: "10px" }}>CITIZEN PROFILE</h3>
-            <p><strong>NAME:</strong> {formData.name || "N/A"}</p>
-            <p><strong>AGE:</strong> {formData.age || "N/A"}</p>
-            <p><strong>LOCATION:</strong> {formData.location || "N/A"}</p>
-            <p><strong>CONTACT:</strong> {formData.email || "N/A"}</p>
+
+          <div style={{ marginBottom: "20px" }}>
+            <h3 style={{ fontSize: "14px", borderBottom: "1px solid #cbd5e1", paddingBottom: "6px", margin: "0 0 10px 0", color: "#0f172a" }}>
+              CITIZEN TELEMETRY
+            </h3>
+            <p style={{ margin: "4px 0", fontSize: "12px" }}><strong>NAME:</strong> {formData?.name || "N/A"}</p>
+            <p style={{ margin: "4px 0", fontSize: "12px" }}><strong>AGE:</strong> {formData?.age || "N/A"}</p>
+            <p style={{ margin: "4px 0", fontSize: "12px" }}><strong>SECTOR / LOCATION:</strong> {formData?.location || "N/A"}</p>
+            <p style={{ margin: "4px 0", fontSize: "12px" }}><strong>COMM FREQUENCY:</strong> {formData?.email || "N/A"}</p>
           </div>
-          <div>
-            <h3 style={{ borderBottom: "1px solid #cbd5e1", paddingBottom: "10px" }}>INCIDENT REPORT</h3>
-            <p style={{ whiteSpace: "pre-wrap", lineHeight: "1.6" }}>{formData.grievance || "No details provided."}</p>
+
+          <div style={{ marginBottom: "24px" }}>
+            <h3 style={{ fontSize: "14px", borderBottom: "1px solid #cbd5e1", paddingBottom: "6px", margin: "0 0 10px 0", color: "#0f172a" }}>
+              INCIDENT LOG & GRIEVANCE
+            </h3>
+            <p style={{ margin: "4px 0", fontSize: "12px", lineHeight: "1.6", whiteSpace: "pre-wrap", color: "#1e293b" }}>
+              {formData?.grievance || "No specific grievance recorded."}
+            </p>
           </div>
-          <div style={{ marginTop: "50px", fontSize: "12px", color: "#94a3b8", textAlign: "center", borderTop: "1px solid #e2e8f0", paddingTop: "20px" }}>
-            Aegis Kinetic Grid System � End of Transmission
+
+          <div style={{ marginTop: "40px", paddingTop: "16px", borderTop: "1px solid #e2e8f0", textAlign: "center", fontSize: "11px", color: "#94a3b8" }}>
+            AEGIS_SYS KINETIC PERIMETER � QUANTUM ENCRYPTED TRANSMISSION � END OF BRIEF
           </div>
         </div>
       </div>
