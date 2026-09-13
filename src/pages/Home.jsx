@@ -2,20 +2,23 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import HeroSection from "../components/HeroSection";
 import ThreatRadar from "../components/ThreatRadar";
-import { Scan, AlertTriangle, ShieldCheck } from "lucide-react";
+import HybridChatbot from "../components/Chatbot";
+import { Scan, AlertTriangle, MessageSquare } from "lucide-react";
+import { useSound } from "../context/SoundContext";
 
 function SurveillanceTerminal() {
   const [lines, setLines] = useState([]);
   const [isScanning, setIsScanning] = useState(true);
+  const { playHover, playClick } = useSound();
 
   const scanSequence = [
     "INITIATING KINETIC SWEEP...",
     "HANDSHAKE PROTOCOL: SECURE.",
     "SCANNING VISITOR HARDWARE...",
-    "CPU: NOMINAL | GPU TEMPS: STABLE.",
+    "KINETIC DISPERSION: STABLE.",
     "ISOLATING BIOMETRIC SIGNATURE...",
     "THREAT LEVEL: CIVILIAN.",
-    "AEGIS: 'I see you. You are safe here. State your emergency.'",
+    "AEGIS (VANCE, A.): 'I see you. You are safe here. State your emergency.'",
   ];
 
   useEffect(() => {
@@ -71,6 +74,8 @@ function SurveillanceTerminal() {
           <AlertTriangle className="w-6 h-6 text-yellow-600 dark:text-yellow-500 animate-pulse" />
           <Link
             to="/dispatch"
+            onMouseEnter={playHover}
+            onClick={playClick}
             className="flex-1 text-center bg-blue-600 dark:bg-cyan-600 hover:bg-blue-700 dark:hover:bg-cyan-500 text-white dark:text-slate-950 font-bold px-6 py-3 rounded uppercase tracking-widest transition-all hover:shadow-[0_0_15px_rgba(37,99,235,0.4)] dark:hover:shadow-[0_0_25px_rgba(6,182,212,0.6)]"
           >
             Enter Dispatch Terminal
@@ -81,81 +86,45 @@ function SurveillanceTerminal() {
   );
 }
 
-function IncidentLog() {
-  const logs = [
-    {
-      id: "AEG-102",
-      sector: "Sector 7",
-      issue: "Bridge Collapse",
-      status: "RESOLVED",
-      time: "04:00 PST",
-    },
-    {
-      id: "AEG-404",
-      sector: "Sector 3",
-      issue: "Energy Overload",
-      status: "RESOLVED",
-      time: "09:12 EST",
-    },
-    {
-      id: "AEG-999",
-      sector: "Sector 12",
-      issue: "Kinetic Anomaly",
-      status: "CONTAINED",
-      time: "22:45 UTC",
-    },
-  ];
-
-  return (
-    <div className="mt-12 mb-8">
-      <h2 className="text-2xl font-bold font-mono text-slate-800 dark:text-white mb-6 flex items-center gap-2">
-        <ShieldCheck className="text-cyan-500" /> Recent Interventions
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {logs.map((log) => (
-          <div
-            key={log.id}
-            className="bg-white/80 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div className="flex justify-between items-start mb-2">
-              <span className="font-mono text-xs font-bold text-slate-500 dark:text-slate-400">
-                {log.id}
-              </span>
-              <span
-                className={`text-xs px-2 py-0.5 rounded-full font-bold ${log.status === "RESOLVED" ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400" : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"}`}
-              >
-                {log.status}
-              </span>
-            </div>
-            <h3 className="font-bold text-slate-900 dark:text-slate-100">
-              {log.issue}
-            </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-              {log.sector} • {log.time}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export default function Home() {
+  const [showChat, setShowChat] = useState(true);
+  const { playHover, playClick } = useSound();
+
   return (
-    <div className="w-full text-slate-900 dark:text-white pb-20">
+    <div className="min-h-screen relative pb-20">
       <HeroSection />
 
-      <div className="max-w-6xl mx-auto px-4 mt-8" id="surveillance-zone">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-          <div className="md:col-span-2">
-            <SurveillanceTerminal />
-          </div>
-          <div className="md:col-span-1 h-full">
-            <ThreatRadar />
-          </div>
+      {/* Main Content Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <SurveillanceTerminal />
+          <ThreatRadar />
         </div>
+      </div>
 
-        <IncidentLog />
+      {/* Floating Chatbot Widget */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
+        {showChat && (
+          <div className="mb-4 pointer-events-auto animate-in slide-in-from-bottom-5 duration-300 origin-bottom-right">
+            <HybridChatbot
+              variant="floating"
+              onClose={() => setShowChat(false)}
+            />
+          </div>
+        )}
+        {!showChat && (
+          <button
+            onClick={() => {
+              playClick();
+              setShowChat(true);
+            }}
+            onMouseEnter={playHover}
+            className="pointer-events-auto bg-cyan-600 hover:bg-cyan-500 text-white rounded-full p-4 shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-transform hover:scale-110 flex items-center justify-center animate-bounce"
+            title="Open Aegis Comm-Link"
+          >
+            <MessageSquare className="w-6 h-6" />
+          </button>
+        )}
       </div>
     </div>
   );

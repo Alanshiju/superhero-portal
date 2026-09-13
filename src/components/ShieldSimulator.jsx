@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from "react";
+import { useSound } from "../context/SoundContext";
 
-export default function ShieldSimulator({ powerLevels }) {
+export default function ShieldSimulator({ powerLevels, stressTestActive }) {
   const canvasRef = useRef(null);
+  const { playHover } = useSound();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -9,7 +11,6 @@ export default function ShieldSimulator({ powerLevels }) {
     let animationFrameId;
 
     const resizeCanvas = () => {
-      // Fit container
       const parent = canvas.parentElement;
       canvas.width = parent.clientWidth;
       canvas.height = 500;
@@ -18,7 +19,6 @@ export default function ShieldSimulator({ powerLevels }) {
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
-    // Particles
     class Particle {
       constructor() {
         this.x = Math.random() * canvas.width;
@@ -27,6 +27,8 @@ export default function ShieldSimulator({ powerLevels }) {
         this.baseY = this.y;
         this.density = Math.random() * 30 + 1;
         this.size = Math.random() * 2 + 1;
+        this.vx = 0;
+        this.vy = 0;
       }
 
       draw() {
@@ -37,33 +39,35 @@ export default function ShieldSimulator({ powerLevels }) {
         ctx.fill();
       }
 
-      update(mouse, shockwaves, currentPower) {
-        // Sensor Sweep makes particles vibrate/scan slightly
+      update(mouse, shockwaves, projectiles, currentPower) {
         let dx = 0;
         let dy = 0;
 
         const scanFactor = currentPower.sensor / 100;
         if (scanFactor > 0) {
-          this.x += (Math.random() - 0.5) * scanFactor * 2;
-          this.y += (Math.random() - 0.5) * scanFactor * 2;
+          this.x += (Math.random() - 0.5) * scanFactor * 3;
+          this.y += (Math.random() - 0.5) * scanFactor * 3;
         }
 
-        // Return to base position (Shield Integrity determines how firmly they hold formation)
         const integrityFactor = Math.max(
           0.01,
-          (currentPower.integrity / 100) * 0.1,
+          (currentPower.integrity / 100) * 0.15,
         );
         dx = this.baseX - this.x;
         dy = this.baseY - this.y;
-        this.x += dx * integrityFactor;
-        this.y += dy * integrityFactor;
 
-        // Mouse repels particles
+        this.vx += dx * integrityFactor;
+        this.vy += dy * integrityFactor;
+
+        // Dampen velocity
+        this.vx *= 0.9;
+        this.vy *= 0.9;
+
         if (mouse.x !== null) {
           let mDx = mouse.x - this.x;
           let mDy = mouse.y - this.y;
           let distance = Math.sqrt(mDx * mDx + mDy * mDy);
-          let maxDist = 100;
+          let maxDist = 120;
 
           if (distance < maxDist) {
             let forceDirectionX = mDx / distance;
@@ -71,36 +75,95 @@ export default function ShieldSimulator({ powerLevels }) {
             let force = (maxDist - distance) / maxDist;
             let directionX = forceDirectionX * force * this.density;
             let directionY = forceDirectionY * force * this.density;
-            this.x -= directionX;
-            this.y -= directionY;
+            this.vx -= directionX * 0.5;
+            this.vy -= directionY * 0.5;
           }
         }
 
-        // Shockwaves repel particles
         shockwaves.forEach((wave) => {
           let wDx = wave.x - this.x;
           let wDy = wave.y - this.y;
           let distance = Math.sqrt(wDx * wDx + wDy * wDy);
 
-          // Wave thickness
-          if (Math.abs(distance - wave.radius) < 20) {
-            let force = (20 - Math.abs(distance - wave.radius)) / 20;
-            // Burst power determines force
-            let burstFactor = (currentPower.burst / 100) * 5;
-            this.x -= (wDx / distance) * force * this.density * burstFactor;
-            this.y -= (wDy / distance) * force * this.density * burstFactor;
+          if (Math.abs(distance - wave.radius) < 30) {
+            let force = (30 - Math.abs(distance - wave.radius)) / 30;
+            let burstFactor = (currentPower.burst / 100) * 8;
+            this.vx -= (wDx / distance) * force * this.density * burstFactor;
+            this.vy -= (wDy / distance) * force * this.density * burstFactor;
           }
         });
+
+        projectiles.forEach((proj) => {
+          let pDx = proj.x - this.x;
+          let pDy = proj.y - this.y;
+          let distance = Math.sqrt(pDx * pDx + pDy * pDy);
+
+          if (distance < proj.radius + 20) {
+            let force = 10;
+            this.vx -= (pDx / distance) * force;
+            this.vy -= (pDy / distance) * force;
+          }
+        });
+
+        this.x += this.vx;
+        this.y += this.vy;
+      }
+    }
+
+    class Projectile {
+      constructor() {
+        this.x = Math.random() < 0.5 ? 0 : canvas.width;
+        this.y = Math.random() * canvas.height;
+        let angle = Math.atan2(
+          canvas.height / 2 - this.y,
+          canvas.width / 2 - this.x,
+        );
+        // Add spread
+        angle += (Math.random() - 0.5) * 0.5;
+        let speed = Math.random() * 5 + 5;
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+        this.radius = 4;
+        this.active = true;
+      }
+
+      draw() {
+        ctx.fillStyle = "#ef4444";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = "#ef4444";
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (
+          this.x < -50 ||
+          this.x > canvas.width + 50 ||
+          this.y < -50 ||
+          this.y > canvas.height + 50
+        ) {
+          this.active = false;
+        }
       }
     }
 
     const particles = [];
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < 600; i++) {
       particles.push(new Particle());
     }
 
     const mouse = { x: null, y: null };
     const shockwaves = [];
+    let projectiles = [];
+    let frameCount = 0;
 
     const handleMouseMove = (e) => {
       const rect = canvas.getBoundingClientRect();
@@ -119,9 +182,10 @@ export default function ShieldSimulator({ powerLevels }) {
         x: e.clientX - rect.left,
         y: e.clientY - rect.top,
         radius: 0,
-        maxRadius: 300,
+        maxRadius: (powerLevels.burst / 100) * 400 + 100,
         opacity: 1,
       });
+      playHover(); // Use hover sound for shockwave click for now
     };
 
     canvas.addEventListener("mousemove", handleMouseMove);
@@ -130,12 +194,16 @@ export default function ShieldSimulator({ powerLevels }) {
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      frameCount++;
 
-      // Update shockwaves
+      if (stressTestActive && frameCount % 10 === 0) {
+        projectiles.push(new Projectile());
+      }
+
       for (let i = shockwaves.length - 1; i >= 0; i--) {
         const wave = shockwaves[i];
-        wave.radius += 5;
-        wave.opacity -= 5 / wave.maxRadius;
+        wave.radius += 8;
+        wave.opacity -= 8 / wave.maxRadius;
 
         if (wave.opacity <= 0) {
           shockwaves.splice(i, 1);
@@ -143,13 +211,21 @@ export default function ShieldSimulator({ powerLevels }) {
           ctx.beginPath();
           ctx.arc(wave.x, wave.y, wave.radius, 0, Math.PI * 2);
           ctx.strokeStyle = `rgba(6, 182, 212, ${wave.opacity})`;
-          ctx.lineWidth = 2;
+          ctx.lineWidth = 3;
           ctx.stroke();
         }
       }
 
+      for (let i = projectiles.length - 1; i >= 0; i--) {
+        projectiles[i].update();
+        projectiles[i].draw();
+        if (!projectiles[i].active) {
+          projectiles.splice(i, 1);
+        }
+      }
+
       particles.forEach((p) => {
-        p.update(mouse, shockwaves, powerLevels);
+        p.update(mouse, shockwaves, projectiles, powerLevels);
         p.draw();
       });
 
@@ -165,10 +241,10 @@ export default function ShieldSimulator({ powerLevels }) {
       canvas.removeEventListener("click", handleClick);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [powerLevels]);
+  }, [powerLevels, stressTestActive]); // Re-bind when state changes to update closures
 
   return (
-    <div className="relative w-full rounded-xl overflow-hidden bg-slate-900 border border-slate-700 dark:border-cyan-900 shadow-2xl cursor-crosshair">
+    <div className="relative w-full rounded-xl overflow-hidden bg-slate-900/50 backdrop-blur-md border border-slate-700 dark:border-cyan-900 shadow-2xl cursor-crosshair">
       <div className="absolute top-4 left-4 z-10 font-mono text-xs text-cyan-500 pointer-events-none drop-shadow-md">
         [ CLICK TO EMIT KINETIC SHOCKWAVE ]
       </div>

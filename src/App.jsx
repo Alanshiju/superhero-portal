@@ -5,11 +5,15 @@ import Intel from "./pages/Intel";
 import Operations from "./pages/Operations";
 import Lab from "./pages/Lab";
 import Layout from "./components/Layout";
+import ScrollToTop from "./components/ScrollToTop";
+import CrisisCalibrator from "./components/CrisisCalibrator";
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Layout>
+        <CrisisCalibrator />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dispatch" element={<Dispatch />} />

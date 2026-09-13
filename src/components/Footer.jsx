@@ -1,7 +1,10 @@
 import React from "react";
 import { Activity, ShieldAlert, TerminalSquare } from "lucide-react";
+import { useSound } from "../context/SoundContext";
 
 export default function Footer() {
+  const { playHover, playClick } = useSound();
+
   return (
     <footer className="border-t border-cyan-500/20 dark:border-cyan-500/30 bg-slate-50 dark:bg-slate-950/80 backdrop-blur-md mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -32,24 +35,32 @@ export default function Footer() {
             </h3>
             <a
               href="/dispatch"
+              onMouseEnter={playHover}
+              onClick={playClick}
               className="text-sm text-slate-500 dark:text-slate-400 hover:text-cyan-500 transition-colors"
             >
               Emergency Dispatch
             </a>
             <a
               href="/intel"
+              onMouseEnter={playHover}
+              onClick={playClick}
               className="text-sm text-slate-500 dark:text-slate-400 hover:text-cyan-500 transition-colors"
             >
               Hero Dossier
             </a>
             <a
               href="/operations"
+              onMouseEnter={playHover}
+              onClick={playClick}
               className="text-sm text-slate-500 dark:text-slate-400 hover:text-cyan-500 transition-colors"
             >
               Defense Grid
             </a>
             <a
               href="/lab"
+              onMouseEnter={playHover}
+              onClick={playClick}
               className="text-sm text-slate-500 dark:text-slate-400 hover:text-cyan-500 transition-colors"
             >
               Shield Simulator

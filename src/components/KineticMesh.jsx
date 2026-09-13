@@ -1,29 +1,29 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 export default function KineticMesh() {
   const canvasRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     let animationFrameId;
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
     // 1. Mouse Interaction State
     const mouse = { x: null, y: null, radius: 180 };
-    
-    window.addEventListener('mousemove', (e) => {
+
+    window.addEventListener("mousemove", (e) => {
       mouse.x = e.x;
       mouse.y = e.y;
     });
-    
-    window.addEventListener('mouseout', () => {
+
+    window.addEventListener("mouseout", () => {
       mouse.x = null;
       mouse.y = null;
     });
@@ -32,7 +32,7 @@ export default function KineticMesh() {
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 1.2; 
+        this.vx = (Math.random() - 0.5) * 1.2;
         this.vy = (Math.random() - 0.5) * 1.2;
         this.radius = Math.random() * 1.5 + 0.5;
       }
@@ -40,7 +40,7 @@ export default function KineticMesh() {
       update() {
         this.x += this.vx;
         this.y += this.vy;
-        
+
         if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
         if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
       }
@@ -48,42 +48,48 @@ export default function KineticMesh() {
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(6, 182, 212, 0.8)';
+        ctx.fillStyle = "rgba(6, 182, 212, 0.8)";
         ctx.fill();
       }
     }
 
     const nodes = [];
-    const numNodes = Math.min(120, (canvas.width * canvas.height) / 12000); 
+    const numNodes = Math.min(120, (canvas.width * canvas.height) / 12000);
     for (let i = 0; i < numNodes; i++) {
       nodes.push(new Node());
     }
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      nodes.forEach(node => {
+
+      nodes.forEach((node) => {
         node.update();
         node.draw();
 
-        // 2. Apply Interactive Gravitational Pull
+        // 2. Apply Interactive Defensive Condensation
         if (mouse.x !== null) {
           const dx = mouse.x - node.x;
           const dy = mouse.y - node.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          
+
           if (distance < mouse.radius) {
-            // Draw interactive kinetic link to cursor
             ctx.beginPath();
             ctx.strokeStyle = `rgba(6, 182, 212, ${1 - distance / mouse.radius})`;
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 1.5;
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(mouse.x, mouse.y);
             ctx.stroke();
-            
-            // Vector pull: drag nodes slightly toward the mouse
-            node.x += dx * 0.02;
-            node.y += dy * 0.02;
+
+            // Defensively condense and orbit around cursor
+            const angle = Math.atan2(dy, dx);
+            const orbitSpeed = 0.05;
+            const targetX =
+              mouse.x - Math.cos(angle + orbitSpeed) * distance * 0.8;
+            const targetY =
+              mouse.y - Math.sin(angle + orbitSpeed) * distance * 0.8;
+
+            node.x += (targetX - node.x) * 0.05;
+            node.y += (targetY - node.y) * 0.05;
           }
         }
       });
@@ -93,7 +99,7 @@ export default function KineticMesh() {
           const dx = nodes[i].x - nodes[j].x;
           const dy = nodes[i].y - nodes[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          
+
           if (distance < 130) {
             ctx.beginPath();
             ctx.strokeStyle = `rgba(6, 182, 212, ${1 - distance / 130})`;
@@ -110,12 +116,12 @@ export default function KineticMesh() {
     animate();
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener("resize", resizeCanvas);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
-return (
+  return (
     <canvas
       ref={canvasRef}
       // Removed the background color so the App theme shows through
