@@ -39,7 +39,7 @@ export default function ShieldSimulator({ powerLevels, stressTestActive }) {
       }
 
       draw() {
-        ctx.fillStyle = "rgba(6, 182, 212, 0.8)";
+        ctx.fillStyle = "rgba(56, 189, 248, 0.8)";
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.closePath();
@@ -217,7 +217,7 @@ export default function ShieldSimulator({ powerLevels, stressTestActive }) {
         } else {
           ctx.beginPath();
           ctx.arc(wave.x, wave.y, wave.radius, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(6, 182, 212, ${wave.opacity})`;
+          ctx.strokeStyle = `rgba(56, 189, 248, ${wave.opacity})`;
           ctx.lineWidth = 3;
           ctx.stroke();
         }

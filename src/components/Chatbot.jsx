@@ -1,6 +1,12 @@
-
 import { useState, useRef, useEffect } from "react";
-import { Download, Loader2, Maximize2, X, MessageSquare } from "lucide-react";
+import {
+  Download,
+  Loader2,
+  Maximize2,
+  X,
+  MessageSquare,
+  TerminalSquare,
+} from "lucide-react";
 import { useSound } from "../context/SoundContext";
 import { useChatContext } from "../context/ChatContext";
 import HeroAvatar from "./HeroAvatar";
@@ -14,7 +20,7 @@ export default function HybridChatbot({ variant = "full", onClose }) {
     caseId,
     isPhase2,
     handleSendMessage,
-    downloadMissionBrief
+    downloadMissionBrief,
   } = useChatContext();
 
   const [inputValue, setInputValue] = useState("");
@@ -30,60 +36,52 @@ export default function HybridChatbot({ variant = "full", onClose }) {
   }, [messages, isAiTyping]);
 
   const onSend = () => {
+    if (!inputValue.trim()) return;
     handleSendMessage(inputValue);
     setInputValue("");
   };
 
   if (variant === "floating") {
     return (
-      <div className="w-full max-w-sm bg-white/95 border border-slate-300 dark:bg-slate-950/95 backdrop-blur-xl border border-cyan-500/50 rounded-xl shadow-[0_0_30px_rgba(6,182,212,0.3)] flex flex-col h-[500px] overflow-hidden">
-        <div className="bg-blue-800 dark:bg-cyan-900/80 p-3 flex justify-between items-center border-b border-cyan-500/50">
-          <div className="flex items-center gap-2">
-            <HeroAvatar className="w-8 h-8 shrink-0" />
-            <span className="font-bold text-sm text-white font-mono tracking-wider">
-              AEGIS COMM-LINK
+      <div className="w-full max-w-sm bg-slate-50/95 dark:bg-[#0d1117]/95 backdrop-blur-xl border border-slate-300 dark:border-slate-800 rounded-sm shadow-xl flex flex-col h-[500px] overflow-hidden">
+        <div className="bg-slate-200/50 dark:bg-slate-900/50 p-3 flex justify-between items-center border-b border-slate-300 dark:border-slate-800">
+          <div className="flex flex-col">
+            <span className="font-mono text-xs font-bold text-slate-900 dark:text-white uppercase tracking-widest flex items-center gap-1.5">
+              <TerminalSquare className="w-3.5 h-3.5 text-amber-500" />
+              SECURE COMM-LINK
+            </span>
+            <span className="font-mono text-[9px] text-sky-600 dark:text-sky-500 tracking-widest mt-0.5">
+              ESTABLISHED ENCRYPTION
             </span>
           </div>
-          <div className="flex gap-2 items-center">
-            {isPhase2 && caseId && (
-              <button
-                onClick={() => {
-                  playClick();
-                  downloadMissionBrief();
-                }}
-                className="p-1 hover:bg-cyan-700 rounded text-cyan-100 transition-colors"
-                title="Download Mission Brief"
-              >
-                <Download className="w-4 h-4" />
-              </button>
-            )}
+          <div className="flex gap-2">
             <button
               onClick={() => {
                 playClick();
                 navigate("/dispatch");
               }}
-              className="p-1 hover:bg-cyan-700 rounded text-cyan-100 transition-colors"
-              title="Expand Full Terminal"
+              onMouseEnter={playHover}
+              className="text-slate-500 hover:text-sky-500 transition-colors"
+              title="Expand to Full Terminal"
             >
               <Maximize2 className="w-4 h-4" />
             </button>
-            {onClose && (
-              <button
-                onClick={() => {
-                  playClick();
-                  onClose();
-                }}
-                className="p-1 hover:bg-cyan-700 rounded text-cyan-100 transition-colors"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
+            <button
+              onClick={() => {
+                playClick();
+                onClose();
+              }}
+              onMouseEnter={playHover}
+              className="text-slate-500 hover:text-amber-500 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
         <div
           ref={messageContainerRef}
-          className="flex-1 overflow-y-auto p-4 space-y-4 font-mono text-sm scroll-smooth"
+          className="flex-1 overflow-y-auto p-3 space-y-3 font-mono scroll-smooth bg-transparent"
         >
           {messages.map((msg, index) => (
             <div
@@ -91,16 +89,16 @@ export default function HybridChatbot({ variant = "full", onClose }) {
               className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[85%] p-2 rounded-md shadow-sm text-xs ${
+                className={`max-w-[85%] p-2 rounded-sm text-[10px] uppercase tracking-wide leading-relaxed border ${
                   msg.sender === "user"
-                    ? "bg-blue-700 dark:bg-cyan-700 text-white border border-blue-800 dark:border-cyan-600"
+                    ? "bg-sky-500/10 text-sky-700 dark:text-sky-400 border-sky-500/30"
                     : msg.sender === "system"
-                      ? "bg-emerald-950 text-emerald-400 border border-emerald-800 w-full text-center font-bold"
-                      : "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-cyan-300 border border-slate-300 dark:border-cyan-900/50"
+                      ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 w-full text-center font-bold"
+                      : "bg-slate-200/50 dark:bg-slate-900/50 text-slate-800 dark:text-slate-300 border-slate-300 dark:border-slate-800"
                 }`}
               >
                 {msg.sender === "aegis" && (
-                  <span className="text-[10px] text-cyan-500 block mb-1 font-bold">
+                  <span className="text-[9px] text-amber-600 dark:text-amber-500 block mb-1 font-bold">
                     AEGIS:
                   </span>
                 )}
@@ -110,32 +108,32 @@ export default function HybridChatbot({ variant = "full", onClose }) {
           ))}
           {isAiTyping && (
             <div className="flex justify-start">
-              <div className="text-cyan-500 font-mono text-xs animate-pulse flex items-center gap-2">
+              <div className="text-amber-500 font-mono text-[9px] animate-pulse flex items-center gap-1.5 uppercase tracking-widest">
                 <Loader2 className="w-3 h-3 animate-spin" /> Transmitting...
               </div>
             </div>
           )}
           {isPhase2 && caseId && (
             <div className="flex justify-center mt-4">
-              <button 
+              <button
                 onClick={downloadMissionBrief}
-                className="w-full mt-2 py-1.5 px-3 bg-cyan-600 hover:bg-cyan-500 text-slate-950 text-xs font-mono font-bold uppercase rounded flex items-center justify-center gap-1.5 transition-colors"
+                className="w-full mt-2 py-2 px-3 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-700 text-[10px] font-mono font-bold uppercase tracking-widest rounded-sm flex items-center justify-center gap-1.5 transition-colors"
               >
-                <Download className="w-3.5 h-3.5"/> Download Mission Brief
+                <Download className="w-3 h-3" /> Download Brief
               </button>
             </div>
           )}
         </div>
 
-        <div className="p-3 bg-slate-100 dark:bg-slate-900 border-t border-slate-300 dark:border-cyan-900/50 flex gap-2">
+        <div className="p-2 bg-slate-100 dark:bg-slate-900/80 border-t border-slate-300 dark:border-slate-800 flex gap-2">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && onSend()}
             disabled={isSending}
-            className="flex-1 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-950 dark:text-white px-3 py-2 text-sm rounded outline-none focus:border-blue-600 dark:focus:border-cyan-500 font-mono disabled:opacity-50"
-            placeholder="Reply..."
+            className="flex-1 bg-white dark:bg-[#0d1117] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white px-3 py-2 text-[10px] rounded-sm outline-none focus:border-amber-500 transition-colors font-mono uppercase disabled:opacity-50"
+            placeholder="AWAITING INPUT..."
           />
           <button
             onClick={() => {
@@ -144,9 +142,9 @@ export default function HybridChatbot({ variant = "full", onClose }) {
             }}
             onMouseEnter={playHover}
             disabled={isSending}
-            className="bg-blue-700 dark:bg-cyan-600 hover:bg-blue-800 dark:hover:bg-cyan-500 text-white px-3 py-2 rounded font-bold transition-all disabled:opacity-50"
+            className="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3 py-2 rounded-sm font-bold transition-all disabled:opacity-50"
           >
-            <MessageSquare className="w-4 h-4" />
+            <MessageSquare className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
@@ -155,106 +153,95 @@ export default function HybridChatbot({ variant = "full", onClose }) {
 
   // FULL VARIANT
   return (
-    <div className="w-full max-w-3xl mx-auto p-1 bg-gradient-to-b from-slate-300 to-slate-400 dark:from-cyan-900/80 dark:to-slate-900/80 rounded-xl shadow-[0_0_40px_rgba(6,182,212,0.2)] mt-8 backdrop-blur-sm flex flex-col">
-      <div className="bg-slate-200/90 dark:bg-slate-950/80 backdrop-blur-md p-4 sm:p-6 rounded-lg flex flex-col h-[650px] transition-colors border border-slate-400 dark:border-slate-800 relative">
-        <div className="flex items-center gap-4 mb-4 pb-4 border-b border-slate-400 dark:border-slate-800">
-          <HeroAvatar className="w-16 h-16 shrink-0" />
-          <div className="flex flex-col">
-            <span className="font-bold text-lg text-slate-900 dark:text-white font-mono">
-              SECURE UPLINK: AEGIS
-            </span>
-            <span className="text-xs text-blue-700 dark:text-cyan-400 font-mono tracking-widest animate-pulse">
-              ESTABLISHED � ENCRYPTED
-            </span>
-          </div>
-
-          {isPhase2 && caseId && (
-            <button
-              onClick={() => {
-                playClick();
-                downloadMissionBrief();
-              }}
-              onMouseEnter={playHover}
-              className="ml-auto flex items-center gap-2 bg-slate-900 dark:bg-cyan-600/20 border border-transparent dark:border-cyan-500/30 hover:bg-slate-800 dark:hover:bg-cyan-500/40 text-white dark:text-cyan-400 px-4 py-2 rounded text-xs uppercase font-bold tracking-widest transition-colors shadow-lg"
-              title="Download Mission Brief"
-            >
-              <Download className="w-4 h-4" />
-              <span className="hidden sm:inline">
-                Download Official Mission Brief
-              </span>
-            </button>
-          )}
-        </div>
-
-        <div
-          ref={messageContainerRef}
-          className="flex-1 overflow-y-auto mb-4 pr-2 space-y-4 font-mono text-sm scroll-smooth"
-        >
-          {messages.map((msg, index) => (
+    <div className="w-full h-full flex flex-col bg-transparent">
+      <div
+        className="flex-1 overflow-y-auto mb-4 pr-2 space-y-4 font-mono scroll-smooth"
+        ref={messageContainerRef}
+      >
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+          >
             <div
-              key={index}
-              className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+              className={`max-w-[85%] sm:max-w-[75%] p-3 rounded-sm border text-[10px] md:text-xs uppercase tracking-wide leading-relaxed ${
+                msg.sender === "user"
+                  ? "bg-sky-500/10 text-sky-700 dark:text-sky-400 border-sky-500/30"
+                  : msg.sender === "system"
+                    ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30 w-full text-center font-bold tracking-widest my-2"
+                    : "bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-300 border-slate-300 dark:border-slate-800"
+              }`}
             >
-              <div
-                className={`max-w-[85%] sm:max-w-[75%] p-3 rounded-md shadow-sm ${
-                  msg.sender === "user"
-                    ? "bg-blue-600 dark:bg-slate-800 text-white dark:text-cyan-100 border border-blue-700 dark:border-slate-700"
-                    : msg.sender === "system"
-                      ? "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 w-full text-center my-4 font-bold tracking-wide"
-                      : "bg-white dark:bg-cyan-950/50 text-slate-900 dark:text-cyan-400 border border-slate-300 dark:border-cyan-900/50 shadow-sm"
-                }`}
-              >
-                {msg.sender === "aegis" && (
-                  <span className="text-xs text-blue-800 dark:text-cyan-500 font-bold block mb-1 font-bold">
-                    AEGIS (VANCE, A.):
-                  </span>
-                )}
-                {msg.text}
-              </div>
+              {msg.sender === "aegis" && (
+                <span className="text-[10px] text-amber-600 dark:text-amber-500 block mb-1 font-bold">
+                  AEGIS (VANCE, A.):
+                </span>
+              )}
+              {msg.text}
             </div>
-          ))}
+          </div>
+        ))}
 
-          {isAiTyping && (
-            <div className="flex justify-start">
-              <div className="text-cyan-500 font-mono text-xs animate-pulse flex items-center gap-2">
-                <Loader2 className="w-3 h-3 animate-spin" /> Aegis is
-                transmitting...
-              </div>
+        {isAiTyping && (
+          <div className="flex justify-start">
+            <div className="text-amber-500 font-mono text-[10px] md:text-xs animate-pulse flex items-center gap-2 uppercase tracking-widest">
+              <Loader2 className="w-3.5 h-3.5 animate-spin" /> Aegis is
+              transmitting...
             </div>
+          </div>
+        )}
+      </div>
+
+      <div className="flex gap-2 pt-4 border-t border-slate-300 dark:border-slate-800 relative">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && onSend()}
+          disabled={isSending}
+          className="flex-1 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white px-4 py-3 rounded-sm outline-none focus:border-amber-500 transition-colors font-mono text-[10px] md:text-xs uppercase disabled:opacity-50"
+          placeholder={
+            isSending
+              ? "PROCESSING..."
+              : isPhase2
+                ? "CHANNEL OPEN. SPEAK TO AEGIS..."
+                : "AWAITING INPUT..."
+          }
+          autoFocus
+        />
+        <button
+          onClick={() => {
+            playClick();
+            onSend();
+          }}
+          onMouseEnter={playHover}
+          disabled={isSending}
+          className="bg-amber-500 hover:bg-amber-600 text-slate-950 px-6 py-3 rounded-sm font-bold transition-all disabled:opacity-50 flex items-center justify-center min-w-[100px] font-mono text-xs uppercase tracking-widest"
+        >
+          {isSending ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            "Transmit"
           )}
-        </div>
+        </button>
+      </div>
 
-        <div className="flex gap-2 pt-4 border-t border-slate-400 dark:border-slate-800 relative">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && onSend()}
-            disabled={isSending}
-            className="flex-1 bg-white dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 text-slate-950 dark:text-white px-4 py-3 rounded outline-none focus:border-blue-600 dark:focus:border-cyan-500 transition-colors font-mono disabled:opacity-50"
-            placeholder={
-              isSending
-                ? "Processing..."
-                : isPhase2
-                  ? "Channel open. Speak to Aegis..."
-                  : "Type your response..."
-            }
-            autoFocus
-          />
+      {isPhase2 && caseId && (
+        <div className="mt-4 flex justify-end">
           <button
             onClick={() => {
               playClick();
-              onSend();
+              downloadMissionBrief();
             }}
             onMouseEnter={playHover}
-            disabled={isSending}
-            className="bg-blue-600 dark:bg-cyan-600 hover:bg-blue-700 dark:hover:bg-cyan-500 text-white dark:text-slate-950 px-6 py-3 rounded font-bold transition-all disabled:opacity-50 flex items-center justify-center min-w-[100px] font-mono"
+            className="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 dark:hover:bg-slate-800 text-slate-900 dark:text-white px-4 py-2 rounded-sm text-[10px] uppercase font-bold tracking-widest transition-colors"
+            title="Download Mission Brief"
           >
-            {isSending ? <Loader2 className="w-5 h-5 animate-spin" /> : "Send"}
+            <Download className="w-3 h-3" />
+            <span className="hidden sm:inline">Download Protocol</span>
           </button>
         </div>
-      </div>
+      )}
     </div>
   );
 }
-

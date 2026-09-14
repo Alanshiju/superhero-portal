@@ -34,9 +34,9 @@ function App() {
         newestOnTop={true}
         closeOnClick
         pauseOnHover
-        toastClassName="bg-white border-2 border-slate-300 text-slate-900 font-mono text-xs shadow-xl dark:bg-slate-900 dark:border-cyan-500/40 dark:text-cyan-300 dark:shadow-[0_0_20px_rgba(6,182,212,0.2)] rounded-lg mb-4"
+        toastClassName="bg-white border-2 border-slate-300 text-slate-900 font-mono text-xs shadow-xl dark:bg-slate-900 dark:border-amber-500/40 dark:text-amber-500 dark:shadow-[0_0_20px_rgba(245,158,11,0.2)] rounded-lg mb-4"
         bodyClassName="p-2"
-        progressClassName="bg-blue-600 dark:bg-cyan-500"
+        progressClassName="bg-amber-500 dark:bg-amber-500"
       />
     </Router>
   );

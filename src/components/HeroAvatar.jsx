@@ -4,12 +4,12 @@ export default function HeroAvatar({ className = "w-48 h-48", eyeOffset = { x: 0
   return (
     <div className={`relative ${className} group`}>
       {/* Glow Behind */}
-      <div className="absolute inset-0 bg-cyan-500/20 blur-2xl rounded-full group-hover:bg-cyan-400/40 transition-all duration-1000 animate-pulse"></div>
+      <div className="absolute inset-0 bg-amber-500/20 blur-2xl rounded-full group-hover:bg-amber-400/40 transition-all duration-1000 animate-pulse"></div>
 
       {/* Inline SVG - Aegis Helmet */}
       <svg
         viewBox="0 0 100 100"
-        className="w-full h-full relative z-10 drop-shadow-[0_0_15px_rgba(6,182,212,0.6)]"
+        className="w-full h-full relative z-10 drop-shadow-[0_0_15px_rgba(245,158,11,0.6)]"
       >
         <defs>
           <linearGradient id="armor-grad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -18,9 +18,9 @@ export default function HeroAvatar({ className = "w-48 h-48", eyeOffset = { x: 0
             <stop offset="100%" stopColor="#020617" />
           </linearGradient>
           <linearGradient id="visor-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#06b6d4" />
-            <stop offset="50%" stopColor="#22d3ee" />
-            <stop offset="100%" stopColor="#06b6d4" />
+            <stop offset="0%" stopColor="#f59e0b" />
+            <stop offset="50%" stopColor="#fbbf24" />
+            <stop offset="100%" stopColor="#f59e0b" />
           </linearGradient>
         </defs>
 
@@ -30,7 +30,7 @@ export default function HeroAvatar({ className = "w-48 h-48", eyeOffset = { x: 0
           cy="50"
           r="45"
           fill="none"
-          stroke="rgba(6,182,212,0.2)"
+          stroke="rgba(245,158,11,0.2)"
           strokeWidth="1"
           strokeDasharray="4 4"
           className="animate-[spin_20s_linear_infinite]"
@@ -40,7 +40,7 @@ export default function HeroAvatar({ className = "w-48 h-48", eyeOffset = { x: 0
           cy="50"
           r="35"
           fill="none"
-          stroke="rgba(6,182,212,0.4)"
+          stroke="rgba(245,158,11,0.4)"
           strokeWidth="0.5"
           strokeDasharray="2 6"
           className="animate-[spin_15s_linear_infinite_reverse]"
@@ -70,7 +70,7 @@ export default function HeroAvatar({ className = "w-48 h-48", eyeOffset = { x: 0
         <path
           d="M 30,45 C 35,42 45,40 50,40 C 55,40 65,42 70,45 L 72,55 C 65,60 55,62 50,62 C 45,62 35,60 28,55 Z"
           fill="none"
-          stroke="#67e8f9"
+          stroke="#fcd34d"
           strokeWidth="1.5"
           className="animate-pulse"
         />
@@ -84,18 +84,18 @@ export default function HeroAvatar({ className = "w-48 h-48", eyeOffset = { x: 0
             strokeLinecap="round"
             opacity="1"
             className="animate-pulse"
-            style={{ filter: "drop-shadow(0 0 5px #22d3ee)" }}
+            style={{ filter: "drop-shadow(0 0 5px #fbbf24)" }}
           />
         </g>
 
         {/* Chest/Neck Kinetic Core */}
-        <circle cx="50" cy="78" r="4" fill="#06b6d4" />
+        <circle cx="50" cy="78" r="4" fill="#f59e0b" />
         <circle
           cx="50"
           cy="78"
           r="6"
           fill="none"
-          stroke="#22d3ee"
+          stroke="#fbbf24"
           strokeWidth="1"
           strokeDasharray="1 2"
           className="animate-[spin_3s_linear_infinite]"

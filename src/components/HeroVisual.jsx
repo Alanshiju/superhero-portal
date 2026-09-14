@@ -209,7 +209,7 @@ export default function HeroVisual({ className = "w-full max-w-lg mx-auto" }) {
           cy="165"
           r="22"
           fill="none"
-          stroke="#06b6d4"
+          stroke="#38bdf8"
           strokeWidth="0.5"
           strokeDasharray="1 6"
           className="animate-[spin_6s_linear_infinite_reverse]"
@@ -226,7 +226,7 @@ export default function HeroVisual({ className = "w-full max-w-lg mx-auto" }) {
         <path
           d="M 85,160 C 60,150 45,140 30,135"
           fill="none"
-          stroke="#06b6d4"
+          stroke="#38bdf8"
           strokeWidth="1.5"
           strokeDasharray="3 3"
           className="animate-[pulse_2s_linear_infinite]"
@@ -234,7 +234,7 @@ export default function HeroVisual({ className = "w-full max-w-lg mx-auto" }) {
         <path
           d="M 115,160 C 140,150 155,140 170,135"
           fill="none"
-          stroke="#06b6d4"
+          stroke="#38bdf8"
           strokeWidth="1.5"
           strokeDasharray="3 3"
           className="animate-[pulse_2s_linear_infinite]"

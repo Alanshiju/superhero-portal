@@ -64,7 +64,7 @@ export default function KineticMesh() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = isDark
-          ? "rgba(6, 182, 212, 0.8)"
+          ? "rgba(245, 158, 11, 0.8)"
           : "rgba(30, 58, 138, 0.5)";
         ctx.fill();
       }

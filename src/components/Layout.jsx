@@ -16,7 +16,7 @@ export default function Layout({ children }) {
   }, [pathname]);
 
   return (
-    <div className="min-h-screen text-slate-900 dark:text-slate-100 font-sans transition-colors duration-300 flex flex-col selection:bg-cyan-500/30 relative isolate overflow-x-hidden pb-6">
+    <div className="min-h-screen text-slate-900 dark:text-slate-100 font-sans transition-colors duration-300 flex flex-col selection:bg-amber-500/30 relative isolate overflow-x-hidden pb-6">
       <KineticMesh />
       <GuardianBackdrop />
 
